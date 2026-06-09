@@ -1,0 +1,88 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: chatia-backend-dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:9229:9229"  # Porta para debugging
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./backend/public:/app/public
+      - ./backend/uploads:/app/uploads
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - chatia-network
+    command: npm run dev:server
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: chatia-frontend-dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - FAST_REFRESH=true
+      - DANGEROUSLY_DISABLE_HOST_CHECK=true
+      - WDS_SOCKET_PORT=3001
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    networks:
+      - chatia-network
+    command: npm start
+
+  postgres:
+    image: postgres:13
+    container_name: chatia-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: chatia
+      POSTGRES_USER: chatia
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    networks:
+      - chatia-network
+
+  redis:
+    image: redis:6-alpine
+    container_name: chatia-redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - chatia-network
+
+networks:
+  chatia-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
