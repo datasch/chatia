@@ -1,7 +1,7 @@
 # ===================================================
 # Stage 1: Build Backend
 # ===================================================
-FROM node:20-bookworm-slim AS backend-builder
+FROM node:24-bookworm-slim AS backend-builder
 WORKDIR /app/backend
 
 RUN apt-get update && apt-get install -y python3 make g++ git && rm -rf /var/lib/apt/lists/*
@@ -16,7 +16,7 @@ RUN npm run build
 # ===================================================
 # Stage 2: Build Frontend
 # ===================================================
-FROM node:20-bookworm-slim AS frontend-builder
+FROM node:24-bookworm-slim AS frontend-builder
 WORKDIR /app/frontend
 
 RUN apt-get update && apt-get install -y python3 make g++ git && rm -rf /var/lib/apt/lists/*
@@ -51,7 +51,7 @@ RUN npx craco build || { echo "Re-intentando build con menos memoria..."; NODE_O
 # ===================================================
 # Stage 3: Final All-in-One Runtime (Coolify ready)
 # ===================================================
-FROM node:20-bookworm-slim
+FROM node:24-bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql \

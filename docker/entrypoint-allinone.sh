@@ -21,8 +21,15 @@ PG_DATA="/var/lib/postgresql/$PG_VERSION/main"
 mkdir -p /var/run/postgresql "$PG_DATA" /var/log/postgresql
 chown -R postgres:postgres /var/run/postgresql /var/lib/postgresql /var/log/postgresql
 
-if [ ! -f "$PG_DATA/PG_VERSION" ]; then
-    echo "   Inicializando datos de PostgreSQL en $PG_DATA..."
+# El paquete postgresql de Debian pre-crea un cluster cuyo postgresql.conf vive
+# en /etc/postgresql (no en el datadir), lo que hace fallar a `pg_ctl -D`.
+# Comprobamos el postgresql.conf DENTRO del datadir: si falta, (re)inicializamos
+# un cluster autoservido. También cubre el caso de un volumen nuevo/vacío.
+if [ ! -f "$PG_DATA/postgresql.conf" ]; then
+    echo "   (Re)inicializando cluster autoservido de PostgreSQL en $PG_DATA..."
+    rm -rf "$PG_DATA"
+    mkdir -p "$PG_DATA"
+    chown -R postgres:postgres "$PG_DATA"
     su - postgres -c "/usr/lib/postgresql/$PG_VERSION/bin/initdb -D $PG_DATA"
 fi
 
