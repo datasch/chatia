@@ -38,7 +38,7 @@ async function seedSettings() {
 
     // Configurações por empresa (com companyId)
     const companySettings = [
-      { key: "appName", value: process.env.COMPANY_NAME || "ChatIA" },
+      { key: "appName", value: process.env.COMPANY_NAME || "Gissap CRM" },
       { key: "primaryColorLight", value: "#6B46C1" },
       { key: "primaryColorDark", value: "#4C1D95" }
     ];

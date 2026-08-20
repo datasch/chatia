@@ -114,14 +114,15 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: "1.4",
     },
     connectionTag: {
-        background: "#05ab92",
+        background: "linear-gradient(135deg, #06b6d4, #3b82f6)",
         color: "#FFF",
         marginRight: 1,
-        padding: "1px 6px",
-        fontWeight: 'bold',
-        borderRadius: "10px",
-        fontSize: "0.6em",
+        padding: "2px 8px",
+        fontWeight: 600,
+        borderRadius: "6px",
+        fontSize: "0.65em",
         whiteSpace: "nowrap",
+        boxShadow: "0 2px 6px rgba(6, 182, 212, 0.25)",
     },
     noTicketsTitle: {
         textAlign: "center",
@@ -134,8 +135,9 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "space-between",
         marginLeft: "5px",
-        fontWeight: "bold",
-        color: theme.mode === 'light' ? "black" : "white",
+        fontWeight: 600,
+        fontSize: "0.925rem",
+        color: theme.mode === 'light' ? "#0f172a" : "#f8fafc",
     },
 
     lastMessageTime: {
@@ -144,7 +146,8 @@ const useStyles = makeStyles((theme) => ({
         position: "relative",
         top: -30,
         marginRight: "1px",
-        color: theme.mode === 'light' ? "black" : grey[400],
+        fontSize: "0.75rem",
+        color: theme.mode === 'light' ? "#64748b" : "#94a3b8",
     },
 
     lastMessageTimeUnread: {
@@ -152,8 +155,9 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "right",
         position: "relative",
         top: -30,
-        color: "green",
-        fontWeight: "bold",
+        color: "#06b6d4",
+        fontWeight: 700,
+        fontSize: "0.75rem",
         marginRight: "1px",
     },
 
@@ -167,19 +171,21 @@ const useStyles = makeStyles((theme) => ({
     contactLastMessage: {
         paddingRight: "0%",
         marginLeft: "5px",
-        color: theme.mode === 'light' ? "black" : grey[400],
+        fontSize: "0.85rem",
+        color: theme.mode === 'light' ? "#475569" : "#94a3b8",
     },
 
     contactLastMessageUnread: {
         paddingRight: 20,
-        fontWeight: "bold",
-        color: theme.mode === 'light' ? "black" : grey[400],
+        fontWeight: 600,
+        fontSize: "0.85rem",
+        color: theme.mode === 'light' ? "#0f172a" : "#f8fafc",
         width: "50%"
     },
 
     badgeStyle: {
         color: "white",
-        backgroundColor: green[500],
+        backgroundColor: "#06b6d4",
     },
 
     acceptButton: {

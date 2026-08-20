@@ -2,8 +2,8 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { messages } from "./languages";
 
-// Detectar idioma de forma segura (sem depender de localStorage que pode ser bloqueado)
-let detectedLng = "pt";
+// Detectar idioma de forma segura con Español por defecto
+let detectedLng = "es";
 try {
   const stored = localStorage.getItem("i18nextLng");
   if (stored) {
@@ -13,8 +13,7 @@ try {
     }
   }
 } catch (e) {
-  // localStorage bloqueado pelo Tracking Prevention - mantém "pt" como padrão
-  // NÃO usar navigator.language pois pode retornar "en" e quebrar a experiência
+  // localStorage bloqueado - mantiene "es" como estándar
 }
 
 i18n
@@ -22,13 +21,13 @@ i18n
   .init({
     debug: false,
     lng: detectedLng,
-    fallbackLng: "pt",
+    fallbackLng: "es",
     defaultNS: ["translations"],
     ns: ["translations"],
     resources: messages,
   });
 
-// Salvar mudança de idioma quando possível
+// Salvar cambio de idioma cuando sea posible
 i18n.on("languageChanged", (lng) => {
   try {
     localStorage.setItem("i18nextLng", lng);

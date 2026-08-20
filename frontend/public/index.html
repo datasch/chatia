@@ -1,51 +1,43 @@
 <!DOCTYPE html>
-<html lang="pt" style="height:100%">
+<html lang="es" style="height:100%">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-  <meta name="theme-color" content="#ffffff" />
-  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#06b6d4" />
+  <meta name="color-scheme" content="dark light" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
-  <title id="page-title">Carregando...</title>
+  <title id="page-title">Gissap CRM · Giantucchi</title>
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
   <script>
     (function() {
-      // i18n + WhiteLabel title
       try {
         var cachedName = localStorage.getItem('appName');
-        if (cachedName && cachedName !== 'null') document.title = cachedName;
+        if (cachedName && cachedName !== 'null') {
+          document.title = cachedName;
+        } else {
+          document.title = "Gissap CRM · Giantucchi";
+        }
       } catch(e) {}
 
-      // Tema
       var path = location.pathname || "/";
-      var isLogin = /\/(login|signup|forgot-password)(\/|$|\?)/i.test(path) || path === "/";
       try {
-        if (isLogin) {
-          localStorage.setItem("theme", "light");
+        var theme = localStorage.getItem("preferredTheme") || localStorage.getItem("theme");
+        if (theme === "light") {
           document.documentElement.classList.remove("dark");
           document.documentElement.setAttribute("data-theme", "light");
-          document.addEventListener("DOMContentLoaded", function() {
-            document.body.classList.add("login-page");
-          });
         } else {
-          var theme = localStorage.getItem("theme");
-          if (theme === "dark") {
-            document.documentElement.classList.add("dark");
-            document.documentElement.setAttribute("data-theme", "dark");
-          } else {
-            document.documentElement.classList.remove("dark");
-            document.documentElement.setAttribute("data-theme", "light");
-          }
+          document.documentElement.classList.add("dark");
+          document.documentElement.setAttribute("data-theme", "dark");
         }
       } catch(e) {
-        document.documentElement.classList.remove("dark");
-        document.documentElement.setAttribute("data-theme", "light");
+        document.documentElement.classList.add("dark");
+        document.documentElement.setAttribute("data-theme", "dark");
       }
     })();
   </script>
@@ -53,17 +45,19 @@
   <!-- Inter Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    /* Spinner global */
+    /* Global Giantucchi Spinner */
     .app-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(107, 70, 193, 0.15);
-      border-top-color: #6B46C1;
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(6, 182, 212, 0.15);
+      border-top-color: #06b6d4;
+      border-right-color: #8b5cf6;
       border-radius: 50%;
-      animation: app-spin 0.7s linear infinite;
+      animation: app-spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
     }
     @keyframes app-spin {
       to { transform: rotate(360deg); }
@@ -74,18 +68,31 @@
       position: fixed;
       inset: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #f8f9fa;
+      background: #0a0a0f;
       z-index: 9999;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+      gap: 16px;
     }
     #splash.splash-hide {
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
     }
+    .splash-logo {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      animation: pulse-logo 2s ease-in-out infinite alternate;
+    }
+    @keyframes pulse-logo {
+      from { transform: scale(0.96); opacity: 0.85; }
+      to { transform: scale(1.04); opacity: 1; filter: drop-shadow(0 0 16px rgba(6, 182, 212, 0.4)); }
+    }
 
-    /* Transição suave para troca de tema - evita flash */
+    /* Transição suave para troca de tema */
     body.theme-transitioning,
     body.theme-transitioning *,
     body.theme-transitioning *::before,
@@ -99,21 +106,22 @@
   </script>
 </head>
 
-<body style="height:100%;margin:0;-webkit-font-smoothing:antialiased;font-family:'Inter',sans-serif;">
-  <!-- Splash: apenas spinner -->
+<body style="height:100%;margin:0;-webkit-font-smoothing:antialiased;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background-color:#0a0a0f;color:#ffffff;">
+  <!-- Splash Screen -->
   <div id="splash">
+    <img src="%PUBLIC_URL%/giantucchi-ico.png" alt="Gissap CRM" class="splash-logo" />
     <div class="app-spinner"></div>
   </div>
 
   <div id="root"></div>
-  <noscript style="display:block;padding:1rem 1.5rem;font-size:.875rem;">Você precisa habilitar o JavaScript para executar este app.</noscript>
+  <noscript style="display:block;padding:1rem 1.5rem;font-size:.875rem;background:#0a0a0f;color:#fff;">Necesitas habilitar JavaScript para ejecutar Gissap CRM.</noscript>
 
   <script>
     window.finishProgress = function() {
       var splash = document.getElementById('splash');
       if (splash) {
         splash.classList.add('splash-hide');
-        setTimeout(function() { if (splash.parentNode) splash.remove(); }, 350);
+        setTimeout(function() { if (splash && splash.parentNode) splash.remove(); }, 400);
       }
     };
   </script>

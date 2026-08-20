@@ -735,12 +735,12 @@ const messages = {
           deleteConfirmation: "¿Estás seguro de que deseas eliminar este flujo? Todas las integraciones relacionadas se perderán.",
         },
         success: "Conexión guardada con éxito.",
-        errorSendQueue: "Se informó tiempo para redirigir cola, pero no se seleccionó fila para redirigir. Ambos campos deben estar llenos",
+        errorSendQueue: "Se ingresó tiempo para redirigir cola, pero no se seleccionó departamento/cola de destino. Ambos campos deben completarse.",
         errorExpiresNPS: "Es obligatorio informar un tiempo para evaluación cuando se utiliza el NPS.",
         errorRatingMessage: "Es obligatorio informar un mensaje de evaluación cuando se utiliza el NPS."
       },
       qrCode: {
-        message: "Lee el QrCode para iniciar la sesión"
+        message: "Escanea el código QR para iniciar sesión"
       },
       qrcodeModal: {
         waiting: "Esperando el Código QR"
@@ -1247,7 +1247,7 @@ const messages = {
         }
       },
       userModal: {
-        warning: "¡Para hacer la importación de los mensajes es necesario leer el qrCode nuevamente !!!",
+        warning: "¡Para importar los mensajes es necesario escanear el código QR nuevamente!",
         title: {
           add: "Agregar usuario",
           edit: "Editar usuario",
@@ -1989,12 +1989,12 @@ const messages = {
           settings: "Configuraciones"
         },
         settings: {
-          randomInterval: "Intervalo Aleatorio de Disparo",
+          randomInterval: "Intervalo Aleatorio de Envío",
           noBreak: "Sin Intervalo",
           intervalGapAfter: "Intervalo mayor después de",
           undefined: "No definido",
           messages: "mensajes",
-          laggerTriggerRange: "Intervalo de disparo mayor",
+          laggerTriggerRange: "Rango mayor de intervalo de envío",
           addVar: "Agregar variable",
           save: "Guardar",
           close: "Cerrar",
@@ -2056,8 +2056,8 @@ const messages = {
             add: "Agregar",
             edit: "Actualizar",
             okadd: "Ok",
-            cancel: "Cancelar Disparos",
-            restart: "Reiniciar Disparos",
+            cancel: "Cancelar Envíos",
+            restart: "Reiniciar Envíos",
             close: "Cerrar",
             attach: "Anexar Archivo"
           }
@@ -2170,7 +2170,7 @@ const messages = {
         modal: {
           editTitle: "Editar campaña con flujo por frase",
           newTitle: "Nueva campaña con flujo por frase",
-          nameLabel: "Nombre del disparo por frase",
+          nameLabel: "Nombre del disparador / activador por frase",
           flowLabel: "Elige un flujo",
           flowPlaceholder: "Elige un flujo",
           connectionPlaceholder: "Selecciona una Conexión",
@@ -2329,7 +2329,7 @@ const messages = {
           numberConections: "Conexiones",
           value: "Valor",
           namePlan: "Nombre Plan",
-          numberQueues: "Filas",
+          numberQueues: "Departamentos / Colas",
           useCampaigns: "Campañas",
           useExternalApi: "Rest API",
           useFacebook: "Facebook",
@@ -2562,9 +2562,9 @@ const messages = {
             buttons: "Botones",
             acceptCallWhatsapp: "Informar que no acepta llamadas en whatsapp?",
             sendSignMessage: "Permitir al agente elegir ENVIAR Firma",
-            sendGreetingMessageOneQueues: "Enviar saludo cuando haya solamente 1 fila",
+            sendGreetingMessageOneQueues: "Enviar saludo cuando haya solamente 1 departamento / cola",
             sendQueuePosition: "Enviar mensaje con la posición de la cola",
-            sendFarewellWaitingTicket: "Enviar mensaje de despedida en el Aguardando",
+            sendFarewellWaitingTicket: "Enviar mensaje de despedida en estado En Espera",
             acceptAudioMessageContact: "¿Aceptar recibir audio de todos los contactos?",
             enableLGPD: "Habilitar tratamiento LGPD",
             requiredTag: "Tag obligatoria para cerrar ticket",
@@ -2582,7 +2582,7 @@ const messages = {
             sendQueuePositionMessage: "Mensaje de posición en la cola",
             AcceptCallWhatsappMessage: "Mensaje para informar que no acepta llamadas",
             greetingAcceptedMessage: "Mensaje de Saludo al aceptar ticket",
-            transferMessage: "Mensaje de transferencia - ${queue.name} = fila destino"
+            transferMessage: "Mensaje de transferencia - ${queue.name} = departamento destino"
           },
           LGPD: {
             title: "LGPD",
@@ -3086,7 +3086,7 @@ const messages = {
             varPushName: "Nombre del contacto en WhatsApp",
             varRemoteJid: "ID completo del contacto (JID)",
             jsonTitle: "Comandos avanzados (JSON):",
-            jsonDesc: "En Typebot, envía un mensaje comenzando con # para ejecutar acciones en ChatIA:",
+            jsonDesc: "En Typebot, envía un mensaje comenzando con # para ejecutar acciones en Gissap CRM:",
             jsonStop: "Detiene el bot y transfiere a un agente",
             jsonQueue: "Transfiere a la cola ID 1",
             jsonUser: "Transfiere a cola 1, agente 5",

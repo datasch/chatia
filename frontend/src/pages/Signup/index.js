@@ -262,14 +262,14 @@ const SignUp = () => {
 
   // Mapeamento de idiomas com bandeiras
   const languageOptions = [
-    { code: "pt-BR", shortCode: "pt", flag: "/flags/br.png", name: "Português" },
-    { code: "en", shortCode: "en", flag: "/flags/us.png", name: "English" },
     { code: "es", shortCode: "es", flag: "/flags/es.png", name: "Español" },
+    { code: "en", shortCode: "en", flag: "/flags/us.png", name: "English" },
+    { code: "pt-BR", shortCode: "pt", flag: "/flags/br.png", name: "Português" },
     { code: "tr", shortCode: "tr", flag: "/flags/tr.png", name: "Türkçe" },
     { code: "ar", shortCode: "ar", flag: "/flags/sa.png", name: "العربية" },
   ];
 
-  const currentLanguage = localStorage.getItem("i18nextLng") || "pt-BR";
+  const currentLanguage = localStorage.getItem("i18nextLng") || "es";
   const selectedLanguage = languageOptions.find(
     lang => lang.code === currentLanguage || lang.shortCode === currentLanguage
   ) || languageOptions[0];
@@ -278,8 +278,8 @@ const SignUp = () => {
     lang.code === currentLanguage || lang.shortCode === currentLanguage;
 
   const langHeaderLabel = (() => {
-    const l = (currentLanguage || "pt").split("-")[0];
-    return l === "en" ? "Language" : l === "es" ? "Idioma" : l === "tr" ? "Dil" : l === "ar" ? "اللغة" : "Idioma";
+    const l = (currentLanguage || "es").split("-")[0];
+    return l === "en" ? "Language" : l === "pt" ? "Idioma" : l === "tr" ? "Dil" : l === "ar" ? "اللغة" : "Idioma";
   })();
 
   let companyId = null;

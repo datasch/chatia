@@ -1,6 +1,6 @@
 {
-	"short_name": "ChatIA Flow",
-	"name": "ChatIA Flow",
+	"short_name": "Gissap CRM",
+	"name": "Gissap CRM · Giantucchi",
 	"icons": [
 		{
 			"src": "favicon.ico",
@@ -13,7 +13,7 @@
 			"type": "image/png"
 		},
 		{
-			"src": "/android-chrome-512x512.png",
+			"src": "/apple-touch-icon.png",
 			"sizes": "512x512",
 			"type": "image/png",
 			"purpose": "any maskable"
@@ -21,19 +21,19 @@
 	],
 	"start_url": ".",
 	"display": "standalone",
-	"theme_color": "#000000",
-	"background_color": "#ffffff",
+	"theme_color": "#06b6d4",
+	"background_color": "#0a0a0f",
 	"prefer_related_applications": false,
-	"categories": ["business", "productivity"],
-	"description": "Sistema de MultiAtendimento para WhatsApp",
+	"categories": ["business", "productivity", "crm"],
+	"description": "Gissap CRM - Sistema Inteligente de Gestión de Clientes y MultiAtención WhatsApp por Giantucchi",
 	"orientation": "any",
 	"scope": "/",
 	"shortcuts": [
 		{
-			"name": "Iniciar atendimento",
-			"short_name": "Atendimento",
-			"description": "Iniciar novo atendimento",
-			"url": "/atendimento"
+			"name": "Iniciar atención",
+			"short_name": "Atención",
+			"description": "Iniciar nueva atención",
+			"url": "/tickets"
 		}
 	]
 }

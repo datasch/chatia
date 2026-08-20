@@ -17,9 +17,9 @@ echo ""
 
 # Step 2: Check if PostgreSQL container is running
 echo "🐘 [2/8] Checking PostgreSQL container..."
-if ! docker ps | grep -q "chatia_postgres_dev"; then
+if ! docker ps | grep -q "chatia-postgres"; then
     echo "⚠️  PostgreSQL container not running. Starting it..."
-    docker-compose up -d postgres
+    docker-compose -f docker-compose.dev.yml up -d postgres
     echo "⏳ Waiting 5 seconds for PostgreSQL to initialize..."
     sleep 5
 else
@@ -31,7 +31,7 @@ echo ""
 echo "⏳ [3/8] Waiting for PostgreSQL to accept connections..."
 MAX_TRIES=30
 for i in $(seq 1 $MAX_TRIES); do
-    if docker exec chatia_postgres_dev pg_isready -U chatia > /dev/null 2>&1; then
+    if docker exec chatia-postgres pg_isready -U chatia > /dev/null 2>&1; then
         echo "✅ PostgreSQL is ready"
         break
     fi
@@ -45,11 +45,11 @@ echo ""
 
 # Step 4: Create database if it doesn't exist
 echo "🗄️  [4/8] Creating database 'chatia_dev' if not exists..."
-DB_EXISTS=$(docker exec chatia_postgres_dev psql -U chatia -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='chatia_dev'" 2>/dev/null || echo "")
+DB_EXISTS=$(docker exec chatia-postgres psql -U chatia -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='chatia_dev'" 2>/dev/null || echo "")
 
 if [ "$DB_EXISTS" != "1" ]; then
     echo "⚠️  Database 'chatia_dev' does not exist. Creating..."
-    docker exec chatia_postgres_dev psql -U chatia -d postgres -c "CREATE DATABASE chatia_dev;" > /dev/null 2>&1
+    docker exec chatia-postgres psql -U chatia -d postgres -c "CREATE DATABASE chatia_dev;" > /dev/null 2>&1
     echo "✅ Database 'chatia_dev' created successfully"
 else
     echo "✅ Database 'chatia_dev' already exists"
@@ -87,7 +87,7 @@ echo ""
 
 # Step 8: Verify super admin exists
 echo "👤 [8/8] Verifying super admin user..."
-ADMIN_EXISTS=$(docker exec chatia_postgres_dev psql -U chatia -d chatia_dev -tAc "SELECT 1 FROM \"Users\" WHERE email='admin@admin.com' LIMIT 1" 2>/dev/null || echo "")
+ADMIN_EXISTS=$(docker exec chatia-postgres psql -U chatia -d chatia_dev -tAc "SELECT 1 FROM \"Users\" WHERE email='admin@admin.com' LIMIT 1" 2>/dev/null || echo "")
 
 if [ "$ADMIN_EXISTS" = "1" ]; then
     echo "✅ Super admin user verified"

@@ -22,15 +22,16 @@ import {
 
 // Custom menu icon (hamburger)
 const CustomMenuIcon = (props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M4 5L16 5" />
-    <path d="M4 12L20 12" />
-    <path d="M4 19L12 19" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M4 6L20 6" />
+    <path d="M4 12L16 12" />
+    <path d="M4 18L12 18" />
   </svg>
 );
+
 // Custom refresh icon
 const RefreshIcon = (props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <path d="M20.5 5.5H9.5C5.78672 5.5 3 8.18503 3 12" />
     <path d="M3.5 18.5H14.5C18.2133 18.5 21 15.815 21 12" />
     <path d="M18.5 3C18.5 3 21 4.84122 21 5.50002C21 6.15882 18.5 8 18.5 8" />
@@ -57,7 +58,6 @@ import { getBackendUrl } from "../config";
 import useSettings from "../hooks/useSettings";
 import VersionControl from "../components/VersionControl";
 
-// logos (fallbacks)
 const logo = "/logo-light.png";
 const logoDark = "/logo-dark.png";
 
@@ -72,30 +72,27 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       height: "calc(100vh - 56px)",
     },
-    backgroundColor: theme.palette.fancyBackground,
-    "& .MuiButton-outlinedPrimary": {
-      color: theme.palette.primary,
-      border:
-        theme.mode === "light"
-          ? "1px solid rgba(0 124 102)"
-          : "1px solid rgba(255, 255, 255, 0.5)",
-    },
-    "& .MuiTab-textColorPrimary.Mui-selected": {
-      color: theme.palette.primary,
-    },
+    backgroundColor: theme.palette.background.default,
   },
 
-  chip: { background: "red", color: "white" },
+  chip: {
+    background: "linear-gradient(135deg, #06b6d4, #3b82f6)",
+    color: "white",
+    fontWeight: 600,
+    fontSize: "11px",
+    borderRadius: 6,
+  },
   avatar: { width: "100%" },
 
   toolbar: {
     paddingRight: 24,
-    color: theme.palette.dark.main,
-    background: theme.palette.barraSuperior,
+    color: theme.mode === "light" ? "#0f172a" : "#f8fafc",
+    background: "transparent",
     gap: theme.spacing(1),
-    overflow: "visible", // não corta o scroller
+    overflow: "visible",
     position: "relative",
     zIndex: 1,
+    minHeight: 56,
     [theme.breakpoints.down("sm")]: {
       paddingRight: theme.spacing(1),
       paddingLeft: theme.spacing(1),
@@ -107,24 +104,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  // SCROLLER HORIZONTAL (ícones)
   topbarScroller: {
     display: "flex",
     alignItems: "center",
-    gap: 14,
+    gap: 12,
     flex: "1 1 0%",
     minWidth: 0,
     maxWidth: "100%",
     flexWrap: "nowrap",
-
-    // DESKTOP: alinhar à direita
     justifyContent: "flex-end",
     overflowX: "visible",
-
-    // cada filho não encolhe => gera overflow quando somar mais que a largura
     "& > *": { flex: "0 0 auto" },
-
-    // MOBILE: alinhar à esquerda + scroll horizontal invisível
     [theme.breakpoints.down("sm")]: {
       justifyContent: "flex-start",
       overflowX: "auto",
@@ -141,10 +131,10 @@ const useStyles = makeStyles((theme) => ({
   toolbarIcon: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    backgroundSize: "cover",
-    padding: "0 8px",
-    minHeight: "48px",
+    justifyContent: "space-between",
+    padding: "12px 14px",
+    minHeight: "56px",
+    borderBottom: theme.mode === "light" ? "1px solid #f1f5f9" : "1px solid rgba(255, 255, 255, 0.06)",
     [theme.breakpoints.down("sm")]: { height: "48px" },
   },
 
@@ -156,49 +146,16 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    overflow: "hidden",
+    backgroundColor: theme.mode === "light" ? "rgba(255, 255, 255, 0.9)" : "rgba(10, 10, 15, 0.85)",
+    backdropFilter: "blur(16px)",
+    WebkitBackdropFilter: "blur(16px)",
+    borderBottom: theme.mode === "light" ? "1px solid #e2e8f0" : "1px solid rgba(255, 255, 255, 0.08)",
+    boxShadow: theme.mode === "light" ? "0 1px 4px rgba(0,0,0,0.04)" : "0 4px 20px rgba(0,0,0,0.4)",
     [theme.breakpoints.down("sm")]: {
       marginLeft: 0,
       width: "100%",
     },
   },
-  "@keyframes headerBubbleFloat1": {
-    "0%":   { transform: "translateX(0) translateY(0)" },
-    "50%":  { transform: "translateX(80px) translateY(-8px)" },
-    "100%": { transform: "translateX(0) translateY(0)" },
-  },
-  "@keyframes headerBubbleFloat2": {
-    "0%":   { transform: "translateX(0) translateY(0)" },
-    "50%":  { transform: "translateX(-60px) translateY(6px)" },
-    "100%": { transform: "translateX(0) translateY(0)" },
-  },
-  "@keyframes headerBubbleFloat3": {
-    "0%":   { transform: "translateX(0) scale(1)" },
-    "50%":  { transform: "translateX(50px) scale(1.2)" },
-    "100%": { transform: "translateX(0) scale(1)" },
-  },
-  headerBubblesWrap: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    pointerEvents: "none",
-    overflow: "hidden",
-    zIndex: 0,
-  },
-  hBubble: {
-    position: "absolute",
-    borderRadius: "50%",
-    background: "rgba(255,255,255,0.22)",
-  },
-  hb1: { width: 18, height: 18, top: 6, left: "5%", animation: "$headerBubbleFloat1 12s ease-in-out infinite" },
-  hb2: { width: 10, height: 10, top: 20, left: "15%", animation: "$headerBubbleFloat2 9s ease-in-out infinite" },
-  hb3: { width: 14, height: 14, top: 4, left: "30%", animation: "$headerBubbleFloat3 14s ease-in-out infinite" },
-  hb4: { width: 8, height: 8, top: 22, left: "50%", animation: "$headerBubbleFloat1 10s ease-in-out infinite reverse" },
-  hb5: { width: 12, height: 12, top: 8, left: "65%", animation: "$headerBubbleFloat2 11s ease-in-out infinite reverse" },
-  hb6: { width: 16, height: 16, top: 3, left: "80%", animation: "$headerBubbleFloat3 13s ease-in-out infinite" },
-  hb7: { width: 6, height: 6, top: 26, left: "92%", animation: "$headerBubbleFloat1 8s ease-in-out infinite" },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -215,8 +172,13 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 0,
     fontSize: 14,
-    color: "white",
+    fontWeight: 500,
+    color: theme.mode === "light" ? "#1e293b" : "#f8fafc",
     marginLeft: theme.spacing(1),
+    "& b": {
+      fontWeight: 600,
+      color: theme.mode === "light" ? "#0284c7" : "#06b6d4",
+    },
     [theme.breakpoints.down("sm")]: { display: "none" },
   },
 
@@ -231,7 +193,8 @@ const useStyles = makeStyles((theme) => ({
     }),
     overflowX: "hidden",
     overflowY: "hidden",
-    backgroundColor: theme.mode === "light" ? "#fff" : "#2c2c2c",
+    backgroundColor: theme.mode === "light" ? "#ffffff" : "#0d0d16",
+    borderRight: theme.mode === "light" ? "1px solid #e2e8f0" : "1px solid rgba(255, 255, 255, 0.08)",
     zIndex: theme.zIndex.drawer + 2,
     display: "flex",
     flexDirection: "column",
@@ -247,52 +210,59 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: { width: theme.spacing(9) },
   },
 
-  appBarSpacer: { minHeight: 48 },
+  appBarSpacer: { minHeight: 56 },
 
   content: { flex: 1, overflow: "hidden", position: "relative" },
-
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
 
   containerWithScroll: {
     flex: 1,
     overflowY: "scroll",
     overflowX: "hidden",
     ...theme.scrollbarStyles,
-    borderRadius: "8px",
-    border: "2px solid transparent",
     "&::-webkit-scrollbar": { display: "none" },
     "-ms-overflow-style": "none",
     "scrollbar-width": "none",
   },
 
   logoImg: {
-    width: "100%",
-    height: 45,
-    maxWidth: 180,
+    height: 38,
+    maxWidth: 160,
     objectFit: "contain",
+    filter: theme.mode === "dark" ? "drop-shadow(0 2px 8px rgba(6, 182, 212, 0.25))" : "none",
   },
-  hideLogo: { display: "none" },
+
+  logoMini: {
+    width: 32,
+    height: 32,
+    objectFit: "contain",
+    filter: theme.mode === "dark" ? "drop-shadow(0 2px 8px rgba(6, 182, 212, 0.35))" : "none",
+  },
 
   avatar2: {
-    width: theme.spacing(4),
-    height: theme.spacing(4),
+    width: 34,
+    height: 34,
     cursor: "pointer",
     borderRadius: "50%",
-    border: "2px solid #ccc",
+    border: "2px solid #06b6d4",
+    boxShadow: "0 0 10px rgba(6, 182, 212, 0.3)",
   },
 
-  compressIconButton: {
-    [theme.breakpoints.down("sm")]: { padding: 6 },
+  iconButtonModern: {
+    padding: 8,
+    borderRadius: 10,
+    color: theme.mode === "light" ? "#475569" : "#cbd5e1",
+    transition: "all 0.2s ease",
+    "&:hover": {
+      background: theme.mode === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.08)",
+      color: "#06b6d4",
+    },
   },
 }));
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
-    backgroundColor: "#44b700",
-    color: "#44b700",
+    backgroundColor: "#10b981",
+    color: "#10b981",
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     "&::after": {
       position: "absolute",
@@ -301,7 +271,7 @@ const StyledBadge = withStyles((theme) => ({
       width: "100%",
       height: "100%",
       borderRadius: "50%",
-      animation: "$ripple 1.2s infinite ease-in-out",
+      animation: "$ripple 1.4s infinite ease-in-out",
       border: "1px solid currentColor",
       content: '""',
     },
@@ -344,25 +314,20 @@ const LoggedInLayout = ({ children }) => {
 
   useEffect(() => {
     const getSetting = async () => {
-      // Não fazer requisição se não houver usuário autenticado
       if (!user || !user.id) return;
-
       try {
-        const response = await settings.get("wtV");
+        await settings.get("wtV");
         setUserToken("disabled");
       } catch (error) {
-        // Ignora erros de autenticação durante logout
         if (error?.response?.status !== 401) {
-          console.error("Erro ao buscar setting wtV:", error);
+          console.error("Error al buscar setting wtV:", error);
         }
       }
     };
     getSetting();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Array vazio = executa apenas uma vez
+  }, []);
 
   useEffect(() => {
-    // Aplica defaultMenu só se o usuário nunca alterou manualmente
     if (document.body.offsetWidth > 600 && localStorage.getItem("drawerOpen") === null) {
       if (user.defaultMenu === "closed") setDrawerOpen(false);
       else setDrawerOpen(true);
@@ -388,7 +353,7 @@ const LoggedInLayout = ({ children }) => {
 
       const onCompanyAuthLayout = (data) => {
         if (data.user.id === +userId) {
-          toastError("Sua conta foi acessada em outro computador.");
+          toastError("Tu cuenta ha sido iniciada en otro dispositivo.");
           setTimeout(() => {
             localStorage.clear();
             window.location.reload();
@@ -397,7 +362,6 @@ const LoggedInLayout = ({ children }) => {
       };
 
       socket.on(`company-${companyId}-auth`, onCompanyAuthLayout);
-
       socket.emit("userStatus");
       const interval = setInterval(() => {
         socket.emit("userStatus");
@@ -435,7 +399,6 @@ const LoggedInLayout = ({ children }) => {
 
   if (loading) return <BackdropLoading />;
 
-  // src da logo com fallback ao tema
   const logoSrc =
     theme.mode === "light"
       ? (typeof theme.calculatedLogoLight === "function"
@@ -456,56 +419,58 @@ const LoggedInLayout = ({ children }) => {
         open={drawerOpen}
       >
         <div className={classes.toolbarIcon} style={drawerOpen ? { justifyContent: "space-between" } : { justifyContent: "center" }}>
-          {drawerOpen && (
+          {drawerOpen ? (
             <img
               src={logoSrc}
-              alt="logo"
+              alt="Gissap CRM"
               className={classes.logoImg}
-              style={{ display: "block", margin: "0 auto", flex: 1 }}
+            />
+          ) : (
+            <img
+              src="/giantucchi-ico.png"
+              alt="Gissap"
+              className={classes.logoMini}
             />
           )}
-          <IconButton onClick={() => { const next = !drawerOpen; setDrawerOpen(next); localStorage.setItem("drawerOpen", String(next)); }} style={{ flexShrink: 0 }}>
-            <CustomMenuIcon style={{ color: theme.mode === "dark" ? "#ffffff" : "#666" }} />
+          <IconButton
+            onClick={() => {
+              const next = !drawerOpen;
+              setDrawerOpen(next);
+              localStorage.setItem("drawerOpen", String(next));
+            }}
+            className={classes.iconButtonModern}
+            style={{ flexShrink: 0 }}
+          >
+            <CustomMenuIcon style={{ color: theme.mode === "dark" ? "#ffffff" : "#475569" }} />
           </IconButton>
         </div>
-        <List className={classes.containerWithScroll} style={{ flex: 1 }}>
+        <List className={classes.containerWithScroll} style={{ flex: 1, padding: "8px 0" }}>
           <MainListItems collapsed={!drawerOpen} />
         </List>
-        <Divider style={{ backgroundColor: theme.mode === "dark" ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)" }} />
+        <Divider style={{ backgroundColor: theme.mode === "dark" ? "rgba(255,255,255,0.08)" : "#e2e8f0" }} />
       </Drawer>
 
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, drawerOpen && classes.appBarShift)}
-        color="primary"
+        elevation={0}
       >
-        <div className={classes.headerBubblesWrap}>
-          <span className={`${classes.hBubble} ${classes.hb1}`} />
-          <span className={`${classes.hBubble} ${classes.hb2}`} />
-          <span className={`${classes.hBubble} ${classes.hb3}`} />
-          <span className={`${classes.hBubble} ${classes.hb4}`} />
-          <span className={`${classes.hBubble} ${classes.hb5}`} />
-          <span className={`${classes.hBubble} ${classes.hb6}`} />
-          <span className={`${classes.hBubble} ${classes.hb7}`} />
-        </div>
         <Toolbar variant="dense" className={classes.toolbar}>
-          {/* Título (desktop apenas) */}
-          <Typography component="h2" variant="h6" color="inherit" noWrap className={classes.title}>
+          <Typography component="h2" variant="h6" noWrap className={classes.title}>
             {greaterThenSm && user?.profile === "admin" && user?.company?.dueDate ? (
               <>
                 {i18n.t("mainDrawer.appBar.user.message")} <b>{user.name}</b>,{" "}
-                {i18n.t("mainDrawer.appBar.user.messageEnd")} <b>{user?.company?.name}</b>! (
+                {i18n.t("mainDrawer.appBar.user.messageEnd")} <b>{user?.company?.name}</b> (
                 {i18n.t("mainDrawer.appBar.user.active")} {dateToClient(user?.company?.dueDate)})
               </>
             ) : (
               <>
                 {i18n.t("mainDrawer.appBar.user.message")} <b>{user.name}</b>,{" "}
-                {i18n.t("mainDrawer.appBar.user.messageEnd")} <b>{user?.company?.name}</b>!
+                {i18n.t("mainDrawer.appBar.user.messageEnd")} <b>{user?.company?.name}</b>
               </>
             )}
           </Typography>
 
-          {/* Direita: Ícones no scroller */}
           <div className={classes.topbarScroller}>
             {userToken === "enabled" && user?.companyId === 1 && (
               <Chip className={classes.chip} label={i18n.t("mainDrawer.appBar.user.token")} />
@@ -515,21 +480,21 @@ const LoggedInLayout = ({ children }) => {
             <UserLanguageSelector />
 
             <IconButton
-              edge="start"
               onClick={colorMode.toggleColorMode}
-              style={{ padding: 8 }}
+              className={classes.iconButtonModern}
+              title={theme.mode === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
             >
               {theme.mode === "dark" ? (
                 <img
                   src="/theme/sol.png"
                   alt="Modo claro"
-                  style={{ width: '24px', height: '24px' }}
+                  style={{ width: "20px", height: "20px" }}
                 />
               ) : (
                 <img
                   src="/theme/lua-clara.png"
-                  alt="Modo escuro"
-                  style={{ width: '24px', height: '24px' }}
+                  alt="Modo oscuro"
+                  style={{ width: "20px", height: "20px" }}
                 />
               )}
             </IconButton>
@@ -539,9 +504,9 @@ const LoggedInLayout = ({ children }) => {
             <IconButton
               onClick={handleRefreshPage}
               aria-label={i18n.t("mainDrawer.appBar.refresh")}
-              color="inherit"
+              className={classes.iconButtonModern}
             >
-              <RefreshIcon style={{ color: "white" }} />
+              <RefreshIcon style={{ color: theme.mode === "dark" ? "#cbd5e1" : "#475569" }} />
             </IconButton>
 
             {user.id && <NotificationsPopOver volume={volume} />}
@@ -555,10 +520,9 @@ const LoggedInLayout = ({ children }) => {
               variant="dot"
               onClick={handleMenu}
             >
-              <Avatar alt="Multi100" className={classes.avatar2} src={profileUrl} />
+              <Avatar alt="Gissap" className={classes.avatar2} src={profileUrl} />
             </StyledBadge>
 
-            {/* Menu do usuário */}
             <UserModal
               open={userModalOpen}
               onClose={() => setUserModalOpen(false)}
@@ -573,6 +537,14 @@ const LoggedInLayout = ({ children }) => {
               transformOrigin={{ vertical: "top", horizontal: "right" }}
               open={menuOpen}
               onClose={handleCloseMenu}
+              PaperProps={{
+                style: {
+                  borderRadius: 14,
+                  backgroundColor: theme.mode === "dark" ? "#12121c" : "#ffffff",
+                  border: theme.mode === "dark" ? "1px solid rgba(255,255,255,0.1)" : "1px solid #e2e8f0",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+                },
+              }}
             >
               <MenuItem onClick={handleOpenUserModal}>{i18n.t("mainDrawer.appBar.user.profile")}</MenuItem>
               <MenuItem onClick={handleClickLogout}>{i18n.t("mainDrawer.appBar.user.logout")}</MenuItem>

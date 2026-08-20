@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 
 const adminEmail = process.env.ADMIN_EMAIL || 'admin@admin.com';
 const adminPassword = process.env.ADMIN_PASSWORD || '123456';
-const companyName = process.env.COMPANY_NAME || 'ChatIA';
+const companyName = process.env.COMPANY_NAME || 'Gissap CRM';
 
 // Gerar hash com salt 10 (mais seguro)
 const passwordHash = bcrypt.hashSync(adminPassword, 10);

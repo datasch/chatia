@@ -272,18 +272,20 @@ const iconStyles = {
 };
 
 // ---------------- i18n helpers ----------------
-const lang = () => (i18n?.language || "pt").split("-")[0].toLowerCase();
+const lang = () => (i18n?.language || "es").split("-")[0].toLowerCase();
 
 /**
- * tLang: tenta i18n.t(key). Se não existir, usa fallback por idioma atual.
- * Ex.: tLang("mainDrawer.listItems.tickets", "Atendimentos", "Services")
+ * tLang: intenta i18n.t(key). Si no existe, usa fallback por idioma actual con Español por defecto.
  */
-const tLang = (key, pt, en) => {
+const tLang = (key, es, en, pt) => {
   try {
     const v = i18n.t(key);
     if (v && v !== key) return v;
   } catch (_) {}
-  return lang() === "en" ? en : pt;
+  const current = lang();
+  if (current === "en") return en || es;
+  if (current === "pt") return pt || es;
+  return es;
 };
 
 // ---------------- theme helpers ----------------
@@ -337,8 +339,8 @@ function ListItemLink({ icon, primary, to, showBadge, iconKey, small, collapsed 
 
   // Debug: verificar se o tema está sendo lido corretamente
   const isDark = theme.mode === "dark" || theme.palette?.mode === "dark" || theme.palette?.type === "dark";
-  const textColor = isDark ? "#ffffff" : "#666";
-  const activeAccent = isDark ? "#ffffff" : "#666";
+  const textColor = isDark ? (isActive ? "#06b6d4" : "#cbd5e1") : (isActive ? "#0284c7" : "#475569");
+  const activeAccent = "#06b6d4";
 
   const renderLink = React.useMemo(
     () => React.forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
@@ -361,7 +363,7 @@ function ListItemLink({ icon, primary, to, showBadge, iconKey, small, collapsed 
             justifyContent: collapsed ? "center" : "flex-start",
             position: "relative",
             overflow: "hidden",
-            background: isActive ? alpha(activeAccent, 0.12) : "transparent",
+            background: isActive ? "linear-gradient(90deg, rgba(6, 182, 212, 0.15) 0%, rgba(59, 130, 246, 0.04) 100%)" : "transparent",
             "&:hover": { background: alpha(activeAccent, 0.08) },
             "&::before": isActive
               ? {
@@ -371,7 +373,7 @@ function ListItemLink({ icon, primary, to, showBadge, iconKey, small, collapsed 
                   top: 0,
                   bottom: 0,
                   width: 4,
-                  background: activeAccent,
+                  background: "linear-gradient(180deg, #06b6d4, #3b82f6)", width: 3, boxShadow: "0 0 10px rgba(6, 182, 212, 0.6)",
                   borderRadius: "0 4px 4px 0",
                 }
               : {},
@@ -616,7 +618,7 @@ const MainListItems = ({ collapsed, drawerClose }) => {
           padding: "16px 16px 8px",
           lineHeight: 1,
           letterSpacing: "0.5px",
-          color: theme.mode === "dark" ? "#ffffff" : "#888",
+          color: theme.mode === "dark" ? "#94a3b8" : "#64748b", fontWeight: 700, letterSpacing: "1px",
         }}
       >
         {children}
@@ -627,9 +629,9 @@ const MainListItems = ({ collapsed, drawerClose }) => {
 
   const ExpandableMenuItem = ({ icon, primary, iconKey, isActive, isOpen, onToggle, children }) => {
     const iconStyle = iconStyles[iconKey] || iconStyles.dashboard;
-    const isDark = theme.mode === "dark" || theme.palette?.mode === "dark" || theme.palette?.type === "dark";
-    const textColor = isDark ? "#ffffff" : "#666";
-    const activeAccent = isDark ? "#ffffff" : "#666";
+  const isDark = theme.mode === "dark" || theme.palette?.mode === "dark" || theme.palette?.type === "dark";
+  const textColor = isDark ? (isActive ? "#06b6d4" : "#cbd5e1") : (isActive ? "#0284c7" : "#475569");
+  const activeAccent = "#06b6d4";
 
     if (collapsed) {
       return (
@@ -653,7 +655,7 @@ const MainListItems = ({ collapsed, drawerClose }) => {
             mx: 1,
             my: 0.5,
             minHeight: 48,
-            background: isActive ? alpha(activeAccent, 0.12) : "transparent",
+            background: isActive ? "linear-gradient(90deg, rgba(6, 182, 212, 0.15) 0%, rgba(59, 130, 246, 0.04) 100%)" : "transparent",
             "&:hover": { background: alpha(activeAccent, 0.08) },
             "& .MuiListItemText-primary": {
               color: `${textColor} !important`,
@@ -695,47 +697,47 @@ const MainListItems = ({ collapsed, drawerClose }) => {
     );
   };
 
-  // ---------------- Labels com fallback por idioma ----------------
+  // ---------------- Labels con fallback por idioma (Español por defecto) ----------------
   const L = {
-    // Gerência
-    management: tLang("mainDrawer.sections.management", "Gerência", "Management"),
-    dashboard: tLang("mainDrawer.listItems.dashboard", "Dashboard", "Dashboard"),
-    reports: tLang("mainDrawer.listItems.reports", "Relatórios", "Reports"),
-    realtime: tLang("mainDrawer.listItems.chatsTempoReal", "Painel", "Panel"),
+    // Gestión
+    management: tLang("mainDrawer.sections.management", "Gestión", "Management", "Gerência"),
+    dashboard: tLang("mainDrawer.listItems.dashboard", "Dashboard", "Dashboard", "Dashboard"),
+    reports: tLang("mainDrawer.listItems.reports", "Informes", "Reports", "Relatórios"),
+    realtime: tLang("mainDrawer.listItems.chatsTempoReal", "Tiempo Real", "Panel", "Painel"),
 
-    // Principais
-    tickets: tLang("mainDrawer.listItems.tickets", "Atendimentos", "Services"),
-    quick: tLang("mainDrawer.listItems.quickMessages", "Respostas rápidas", "Quick Responses"),
-    kanban: tLang("mainDrawer.listItems.kanban", "Kanban", "Kanban"),
-    contacts: tLang("mainDrawer.listItems.contacts", "Contatos", "Contacts"),
-    schedules: tLang("mainDrawer.listItems.schedules", "Agendamentos", "Schedules"),
-    tags: tLang("mainDrawer.listItems.tags", "Tags", "Tags"),
-    internalChat: tLang("mainDrawer.listItems.internalChat", "Chat Interno", "Internal Chat"),
-    helps: tLang("mainDrawer.listItems.helps", "Ajuda", "Help"),
+    // Principales
+    tickets: tLang("mainDrawer.listItems.tickets", "Atención / Tickets", "Services", "Atendimentos"),
+    quick: tLang("mainDrawer.listItems.quickMessages", "Respuestas Rápidas", "Quick Responses", "Respostas rápidas"),
+    kanban: tLang("mainDrawer.listItems.kanban", "Kanban", "Kanban", "Kanban"),
+    contacts: tLang("mainDrawer.listItems.contacts", "Contactos", "Contacts", "Contatos"),
+    schedules: tLang("mainDrawer.listItems.schedules", "Agendamientos", "Schedules", "Agendamentos"),
+    tags: tLang("mainDrawer.listItems.tags", "Etiquetas", "Tags", "Tags"),
+    internalChat: tLang("mainDrawer.listItems.internalChat", "Chat Interno", "Internal Chat", "Chat Interno"),
+    helps: tLang("mainDrawer.listItems.helps", "Centro de Ayuda", "Help", "Ajuda"),
 
-    // Administração
-    admin: tLang("mainDrawer.listItems.administration", "Administração", "Administration"),
-    campaigns: tLang("campaigns.title", "Campanhas", "Campaigns"),
-    campaigns_list: tLang("campaigns.subMenus.list", "Listagem", "List"),
-    campaigns_contacts: tLang("campaigns.subMenus.listContacts", "Lista de contatos", "Contact List"),
-    campaigns_settings: tLang("campaigns.subMenus.settings", "Configurações", "Settings"),
+    // Administración
+    admin: tLang("mainDrawer.listItems.administration", "Administración", "Administration", "Administração"),
+    campaigns: tLang("campaigns.title", "Campañas", "Campaigns", "Campanhas"),
+    campaigns_list: tLang("campaigns.subMenus.list", "Listado de Campañas", "List", "Listagem"),
+    campaigns_contacts: tLang("campaigns.subMenus.listContacts", "Lista de Contactos", "Contact List", "Lista de contatos"),
+    campaigns_settings: tLang("campaigns.subMenus.settings", "Configuración de Campañas", "Settings", "Configurações"),
 
-    flowbuilder: tLang("flowbuilder.title", "Flowbuilder", "Flowbuilder"),
-    flowbuilder_campaign: tLang("flowbuilder.subMenus.campaign", "Campaign Flow", "Campaign Flow"),
-    flowbuilder_conversation: tLang("flowbuilder.subMenus.conversation", "Conversation Flow", "Conversation Flow"),
+    flowbuilder: tLang("flowbuilder.title", "Flowbuilder", "Flowbuilder", "Flowbuilder"),
+    flowbuilder_campaign: tLang("flowbuilder.subMenus.campaign", "Flujo de Campaña", "Campaign Flow", "Fluxo de Campanha"),
+    flowbuilder_conversation: tLang("flowbuilder.subMenus.conversation", "Flujo de Conversación", "Conversation Flow", "Fluxo de Conversa"),
 
-    announcements: tLang("announcements.title", "Informativos", "Announcements"),
-    api: tLang("api.title", "API", "API"),
-    users: tLang("users.title", "Usuários", "Users"),
-    queues: tLang("queues.title", "Filas", "Queues"),
-    prompts: tLang("prompts.title", "Prompts", "Prompts"),
-    integrations: tLang("integrations.title", "Integrações", "Integrations"),
-    connections: tLang("connections.title", "Conexões", "Connections"),
-    allConnections: tLang("connections.manage", "Gerenciar conexões", "Manage connections"),
-    files: tLang("mainDrawer.listItems.files", "Arquivos", "File List"),
-    financial: tLang("financial.title", "Financeiro", "Financial"),
-    settings: tLang("settings.title", "Configurações", "Settings"),
-    companies: tLang("companies.title", "Empresas", "Companies"),
+    announcements: tLang("announcements.title", "Informativos / Avisos", "Announcements", "Informativos"),
+    api: tLang("api.title", "API & Webhooks", "API", "API"),
+    users: tLang("users.title", "Usuarios", "Users", "Usuários"),
+    queues: tLang("queues.title", "Departamentos / Filas", "Queues", "Filas"),
+    prompts: tLang("prompts.title", "Prompts de IA", "Prompts", "Prompts"),
+    integrations: tLang("integrations.title", "Integraciones", "Integrations", "Integrações"),
+    connections: tLang("connections.title", "Canales y Conexiones", "Connections", "Conexões"),
+    allConnections: tLang("connections.manage", "Administrar Conexiones", "Manage connections", "Gerenciar conexões"),
+    files: tLang("mainDrawer.listItems.files", "Archivos", "File List", "Arquivos"),
+    financial: tLang("financial.title", "Financiero", "Financial", "Financeiro"),
+    settings: tLang("settings.title", "Configuración", "Settings", "Configurações"),
+    companies: tLang("companies.title", "Empresas", "Companies", "Empresas"),
   };
 
   return (

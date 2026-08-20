@@ -63,9 +63,9 @@ if (process.env.NODE_ENV === "production") {
   ALLOWED_ORIGINS.push(...httpsOrigins);
 }
 
-// Adicionar v1.chatia.cloud se não estiver na lista
-if (!ALLOWED_ORIGINS.some(origin => origin.includes("chatia.cloud"))) {
-  ALLOWED_ORIGINS.push("https://v1.chatia.cloud", "http://v1.chatia.cloud");
+// Adicionar origens de domínio padrão se não estiverem na lista
+if (!ALLOWED_ORIGINS.some(origin => origin.includes("gissap") || origin.includes("giantucchi"))) {
+  ALLOWED_ORIGINS.push("https://gissap.giantucchi.com", "http://localhost:3000");
 }
 
 // Ajuste da classe AppError para compatibilidade com Error

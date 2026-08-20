@@ -1,51 +1,216 @@
-/* Altura correta no mobile (evita "saltos" com a barra de endereço) */
-html, body, #root { height: 100%; }
-#root { min-height: 100dvh; background: #fff; }
+/* =========================================================
+   Gissap CRM · Giantucchi Next-Gen Design System & Global Styles
+   ========================================================= */
 
-/* Respeita entalhes e barras (iPhone, Android) */
+:root {
+  --color-brand-cyan: #06b6d4;
+  --color-brand-cyan-light: #22d3ee;
+  --color-brand-cyan-dark: #0891b2;
+  --color-brand-blue: #3b82f6;
+  --color-brand-purple: #8b5cf6;
+  --color-brand-magenta: #ec4899;
+  --color-brand-orange: #f97316;
+  --color-brand-yellow: #eab308;
+  --color-brand-emerald: #10b981;
+
+  --color-dark-bg: #0a0a0f;
+  --color-dark-surface: #12121c;
+  --color-dark-surface-elevated: #181828;
+  --color-dark-border: rgba(255, 255, 255, 0.08);
+  --color-dark-border-glow: rgba(6, 182, 212, 0.35);
+
+  --brand-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 30%, #8b5cf6 70%, #ec4899 100%);
+  --brand-gradient-reverse: linear-gradient(135deg, #ec4899 0%, #8b5cf6 30%, #3b82f6 70%, #06b6d4 100%);
+  --cyan-blue-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --glass-bg-dark: rgba(18, 18, 28, 0.75);
+  --glass-border-dark: rgba(255, 255, 255, 0.08);
+}
+
+/* Height & Base */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  background-color: #0a0a0f;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-cyan);
+}
+
+/* Glassmorphism utilities */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(18, 18, 28, 0.75) 100%) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(18, 18, 28, 0.8) 50%, rgba(10, 10, 15, 0.95) 100%) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 14px !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.glass-card-hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(18, 18, 28, 0.75) 50%, rgba(10, 10, 15, 0.9) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(6, 182, 212, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Brand Text Gradients */
+.brand-gradient-text {
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 30%, #8b5cf6 60%, #ec4899 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 700 !important;
+}
+
+.premium-gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Brand Buttons */
+.btn-brand-gradient {
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 16px rgba(6, 182, 212, 0.25) !important;
+}
+
+.btn-brand-gradient:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 24px rgba(6, 182, 212, 0.45) !important;
+  filter: brightness(1.08) !important;
+}
+
+/* Material UI Component Elevators */
+.MuiPaper-elevation1 {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 14px !important;
+}
+
+.MuiDialog-paper {
+  border-radius: 18px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: #12121c !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(6, 182, 212, 0.1) !important;
+}
+
+.MuiTableRow-root:hover {
+  background-color: rgba(6, 182, 212, 0.05) !important;
+}
+
+.MuiTableCell-root {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  font-size: 0.85rem !important;
+}
+
+.MuiTableCell-head {
+  font-weight: 700 !important;
+  color: #94a3b8 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-size: 0.75rem !important;
+}
+
+/* Safe areas */
 .safe-area-top    { padding-top: env(safe-area-inset-top); }
 .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
 
-/* Linha de ações/ícones (a sua fileira verde de ícones) vira carrossel horizontal */
+/* Horizontal toolbar scroll */
 .toolbar-scroll {
   display: flex; gap: .5rem; overflow-x: auto; -webkit-overflow-scrolling: touch;
   padding: .25rem .5rem;
 }
 .toolbar-scroll > * { flex: 0 0 auto; }
 
-/* “Chips”/badges (SITE CONNECT / ATENDIMENTO / MARCIO) quebram ou rolam */
+/* Badge row */
 .badge-row {
   display: flex; gap: .25rem; flex-wrap: wrap;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
 
-/* Cartões da lista de tickets ficam tocáveis (44px+) e compactos */
+/* Ticket items in Ticket list */
 .ticket-item {
   display: grid;
   grid-template-columns: 48px 1fr auto;
   grid-template-rows: auto auto;
   column-gap: .75rem; row-gap: .25rem;
-  align-items: center; padding: .5rem .75rem; min-height: 64px;
+  align-items: center; padding: .65rem .85rem; min-height: 68px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
 }
-.ticket-item .avatar { grid-row: 1 / span 2; width: 48px; height: 48px; border-radius: 50%; }
-.ticket-item .title  { font-size: 16px; font-weight: 600; line-height: 1.2; }
-.ticket-item .msg    { font-size: 14px; color: #374151; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ticket-item:hover {
+  background: rgba(6, 182, 212, 0.06);
+}
+.ticket-item .avatar { grid-row: 1 / span 2; width: 44px; height: 44px; border-radius: 50%; }
+.ticket-item .title  { font-size: 15px; font-weight: 600; line-height: 1.2; }
+.ticket-item .msg    { font-size: 13px; color: #9ca3af; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ticket-item .right  { grid-row: 1; grid-column: 3; text-align: right; font-size: 12px; color: #6b7280; }
 .ticket-item .badges { grid-row: 2; grid-column: 2 / span 2; }
 
-/* Botões flutuantes laterais viram “pílulas” tocáveis */
+/* Modern Pill Buttons */
 .icon-pill {
   width: 36px; height: 36px; border-radius: 18px; display: inline-flex;
-  align-items: center; justify-content: center; border: 1px solid #e5e7eb;
-  background: #fff;
+  align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+.icon-pill:hover {
+  border-color: #06b6d4;
+  background: rgba(6, 182, 212, 0.12);
+  color: #06b6d4;
 }
 
-/* Esconde o que polui em telas < 360px */
+/* App Bar & Mobile */
 @media (max-width: 360px) {
   .hide-xs { display: none !important; }
 }
 
-/* AppBar compacta no mobile */
 @media (max-width: 600px) {
   .appbar { min-height: 52px; }
   .appbar .MuiToolbar-root { min-height: 52px; padding: 0 8px; }

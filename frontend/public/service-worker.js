@@ -1,8 +1,8 @@
 /* public/service-worker.js */
 
 // Nomes dos caches para controle de versão
-const STATIC_CACHE = "mf-static-v1";
-const RUNTIME_CACHE = "mf-runtime-v1";
+const STATIC_CACHE = "gissap-static-v2";
+const RUNTIME_CACHE = "gissap-runtime-v2";
 
 // Arquivos essenciais do app para cache inicial (modo offline)
 const PRECACHE_URLS = [
@@ -66,7 +66,7 @@ self.addEventListener("push", event => {
     payload = { title: "Notificação", body: event.data.text() };
   }
 
-  const title = payload.title || "ChatIA";
+  const title = payload.title || "Gissap CRM";
   const options = {
     body: payload.body || "",
     icon: payload.icon || "/android-chrome-192x192.png",

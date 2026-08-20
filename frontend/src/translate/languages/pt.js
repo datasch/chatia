@@ -3086,7 +3086,7 @@ const messages = {
             varPushName: "Nome do contato no WhatsApp",
             varRemoteJid: "ID completo do contato (JID)",
             jsonTitle: "Comandos avançados (JSON):",
-            jsonDesc: "No Typebot, envie uma mensagem começando com # para executar ações no ChatIA:",
+            jsonDesc: "No Typebot, envie uma mensagem começando com # para executar ações no Gissap CRM:",
             jsonStop: "Para o bot e transfere para atendente",
             jsonQueue: "Transfere para a fila ID 1",
             jsonUser: "Transfere para fila 1, atendente 5",

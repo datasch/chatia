@@ -122,13 +122,12 @@ const useStyles = makeStyles((theme) => ({
   tabsHeader: {
     minWidth: "auto",
     width: "auto",
-    borderRadius: 8,
+    borderRadius: 12,
     marginTop: theme.spacing(0.5),
     marginBottom: theme.spacing(0.5),
     marginLeft: theme.spacing(0.5),
     marginRight: theme.spacing(0.5),
-    // backgroundColor: "#eee",
-    // backgroundColor: theme.palette.tabHeaderBackground,
+    background: "transparent",
   },
 
   settingsIcon: {
@@ -140,37 +139,25 @@ const useStyles = makeStyles((theme) => ({
   tab: {
     minWidth: "auto",
     width: "auto",
-    padding: theme.spacing(0.5, 1),
-    borderRadius: 8,
-    transition: "0.3s",
-    borderColor: "#aaa",
-    borderWidth: "1px",
-    borderStyle: "solid",
-    marginRight: theme.spacing(0.5),
-    marginLeft: theme.spacing(0.5),
-
-    [theme.breakpoints.down("lg")]: {
-      fontSize: "0.9rem",
-      padding: theme.spacing(0.4, 0.8),
-      marginRight: theme.spacing(0.4),
-      marginLeft: theme.spacing(0.4),
-    },
-
-    [theme.breakpoints.down("md")]: {
-      fontSize: "0.8rem",
-      padding: theme.spacing(0.3, 0.6),
-      marginRight: theme.spacing(0.3),
-      marginLeft: theme.spacing(0.3),
-    },
+    padding: theme.spacing(0.6, 1.2),
+    borderRadius: 10,
+    transition: "all 0.2s ease",
+    border: "none",
+    marginRight: theme.spacing(0.4),
+    marginLeft: theme.spacing(0.4),
+    fontWeight: 600,
+    fontSize: "0.825rem",
+    color: theme.mode === "dark" ? "#94a3b8" : "#64748b",
 
     "&:hover": {
-      backgroundColor: "rgba(0, 0, 0, 0.1)",
+      backgroundColor: theme.mode === "dark" ? "rgba(255, 255, 255, 0.06)" : "rgba(0, 0, 0, 0.04)",
+      color: theme.mode === "dark" ? "#ffffff" : "#0f172a",
     },
 
-    // "&$selected": {
-    //   color: "#FFF",
-    //   backgroundColor: theme.palette.primary.main,
-    // },
+    "&$selected": {
+      color: "#06b6d4 !important",
+      backgroundColor: theme.mode === "dark" ? "rgba(6, 182, 212, 0.12)" : "rgba(6, 182, 212, 0.08)",
+    },
   },
 
   tabPanelItem: {
@@ -180,10 +167,10 @@ const useStyles = makeStyles((theme) => ({
   },
 
   tabIndicator: {
-    height: 6,
+    height: 3,
     bottom: 0,
-    borderRadius: "0 0 8px 8px",
-    backgroundColor: theme.mode === "light" ? theme.palette.primary.main : "#FFF",
+    borderRadius: "3px 3px 0 0",
+    backgroundColor: "#06b6d4",
   },
   tabsBadge: {
     top: "105%",
@@ -192,41 +179,41 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     borderRadius: "12px",
     padding: "0 8px",
-    backgroundColor: theme.mode === "light" ? theme.palette.primary.main : "#FFF",
-    color: theme.mode === "light" ? "#FFF" : theme.palette.primary.main,
+    backgroundColor: "#06b6d4",
+    color: "#ffffff",
   },
   ticketOptionsBox: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    // background: "#fafafa",
-    background: theme.palette.optionsBackground,
-    borderRadius: 8,
-    borderColor: "#aaa",
-    borderWidth: "1px",
-    borderStyle: "solid",
+    background: "transparent",
+    borderRadius: 12,
+    border: "none",
     marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(0.5),
+    marginLeft: theme.spacing(0.5),
+    marginRight: theme.spacing(0.5),
     padding: theme.spacing(0.5),
   },
 
   serachInputWrapper: {
     flex: 1,
-    // background: "#fff",
     height: 40,
-    background: theme.palette.total,
+    background: theme.mode === 'light' ? "#ffffff" : "rgba(18, 18, 28, 0.8)",
     display: "flex",
-    borderRadius: 40,
-    padding: 4,
-    borderColor: "#aaa",
-    borderWidth: "1px",
-    borderStyle: "solid",
+    borderRadius: 24,
+    padding: "2px 8px",
+    border: theme.mode === 'light' ? "1px solid #e2e8f0" : "1px solid rgba(255, 255, 255, 0.08)",
+    boxShadow: theme.mode === 'light' ? "0 1px 3px rgba(0,0,0,0.04)" : "0 2px 8px rgba(0,0,0,0.25)",
+    transition: "border-color 0.2s ease, box-shadow 0.2s ease",
     marginTop: theme.spacing(0.5),
     marginBottom: theme.spacing(0.5),
     marginLeft: theme.spacing(0.5),
     marginRight: theme.spacing(0.5),
+    "&:focus-within": {
+      borderColor: "#06b6d4",
+      boxShadow: "0 0 12px rgba(6, 182, 212, 0.25)",
+    },
   },
 
   searchIcon: {

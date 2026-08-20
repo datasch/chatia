@@ -90,11 +90,11 @@ export const sendTestEmail = async (
   try {
     await SendMail({
       to: email,
-      subject: "Teste SMTP - ChatIA",
-      text: "Este é um e-mail de teste. Se você recebeu, o SMTP está configurado corretamente!",
-      html: "<h2>Teste SMTP - ChatIA</h2><p>Se você recebeu este e-mail, o SMTP está configurado corretamente!</p>"
+      subject: "Prueba SMTP - Gissap CRM",
+      text: "Este es un correo de prueba de Gissap CRM (Giantucchi Ecosystem). Si has recibido este mensaje, el servidor SMTP está configurado correctamente.",
+      html: "<h2>Prueba SMTP - Gissap CRM</h2><p>Este es un correo de prueba de Gissap CRM. Si has recibido este mensaje, el servidor SMTP está configurado correctamente.</p>"
     }, companyId);
-    return res.status(200).json({ success: true, message: "E-mail de teste enviado com sucesso!" });
+    return res.status(200).json({ success: true, message: "Correo de prueba enviado con éxito." });
   } catch (err: any) {
     return res.status(400).json({ success: false, message: err.message || "Erro ao enviar e-mail de teste." });
   }

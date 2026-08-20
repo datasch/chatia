@@ -1,5 +1,5 @@
 /**
- * Feature Flags do ChatIA Flow
+ * Feature Flags de Gissap CRM (Giantucchi)
  *
  * IMPORTANTE: Adicionar novas flags apenas após aprovação do Product Owner.
  * Remover flags antigas após 2 semanas de 100% rollout.

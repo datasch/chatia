@@ -12,11 +12,11 @@ const env: AppEnv = {
   REACT_APP_BACKEND_URL: (process.env.REACT_APP_BACKEND_URL as string) || "",
   REACT_APP_FACEBOOK_APP_ID: (process.env.REACT_APP_FACEBOOK_APP_ID as string) || "",
   REACT_APP_REQUIRE_BUSINESS_MANAGEMENT: (((process.env.REACT_APP_REQUIRE_BUSINESS_MANAGEMENT as string) || "FALSE").toUpperCase() === "TRUE"),
-  REACT_APP_NAME_SYSTEM: (process.env.REACT_APP_NAME_SYSTEM as string) || "ChatIA",
+  REACT_APP_NAME_SYSTEM: (process.env.REACT_APP_NAME_SYSTEM as string) || "Gissap CRM",
   REACT_APP_NUMBER_SUPPORT: (process.env.REACT_APP_NUMBER_SUPPORT as string) || "",
   REACT_APP_HOURS_CLOSE_TICKETS_AUTO: (process.env.REACT_APP_HOURS_CLOSE_TICKETS_AUTO as string) || "9999",
-  REACT_APP_PRIMARY_COLOR: (process.env.REACT_APP_PRIMARY_COLOR as string) || "#6B46C1",
-  REACT_APP_PRIMARY_DARK: (process.env.REACT_APP_PRIMARY_DARK as string) || "#4C1D95"
+  REACT_APP_PRIMARY_COLOR: (process.env.REACT_APP_PRIMARY_COLOR as string) || "#06b6d4",
+  REACT_APP_PRIMARY_DARK: (process.env.REACT_APP_PRIMARY_DARK as string) || "#3b82f6"
 };
 export default env;
 export const BACKEND_URL: string = env.REACT_APP_BACKEND_URL;

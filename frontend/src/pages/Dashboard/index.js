@@ -12,11 +12,9 @@ import {
   Tab,
   Tabs,
   Grid,
-  IconButton,
   Divider
 } from "@mui/material";
 import {
-  SaveAlt,
   Groups,
   Call as CallIcon,
   HourglassEmpty as HourglassEmptyIcon,
@@ -30,39 +28,77 @@ import { toast } from "react-toastify";
 import { isArray } from "lodash";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import useDashboard from "../../hooks/useDashboard";
-import TableAttendantsStatus from "../../components/Dashboard/TableAttendantsStatus";
 import { ChatsUser } from "./ChartsUser";
 import ChartDonut from "./ChartDonut";
 import { ChartsDate } from "./ChartsDate";
 import ForbiddenPage from "../../components/ForbiddenPage";
 import { i18n } from "../../translate/i18n";
-
-// Tema v4 (whitelabel igual ao login) + tema v5 para demais tokens
 import { useTheme as useThemeV4 } from "@material-ui/core/styles";
 import { useTheme as useThemeV5 } from "@mui/material/styles";
 
-// Cartões de estatísticas
-const StatCard = ({ title, value, icon, color }) => (
+const StatCard = ({ title, value, icon, gradient, color }) => (
   <Card
     sx={{
       height: "100%",
       borderRadius: 3,
-      boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-      transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
-      "&:hover": { transform: "translateY(-4px)", boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }
+      background: (theme) =>
+        theme.palette.mode === "dark"
+          ? "linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(18, 18, 28, 0.8) 100%)"
+          : "#ffffff",
+      backdropFilter: "blur(12px)",
+      border: (theme) =>
+        theme.palette.mode === "dark"
+          ? "1px solid rgba(255, 255, 255, 0.08)"
+          : "1px solid #e2e8f0",
+      boxShadow: (theme) =>
+        theme.palette.mode === "dark"
+          ? "0 4px 20px rgba(0,0,0,0.3)"
+          : "0 2px 8px rgba(0,0,0,0.04)",
+      transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+      "&:hover": {
+        transform: "translateY(-3px)",
+        borderColor: color || "#06b6d4",
+        boxShadow: (theme) =>
+          theme.palette.mode === "dark"
+            ? `0 8px 30px rgba(0,0,0,0.5), 0 0 15px ${color}33`
+            : "0 8px 24px rgba(0,0,0,0.08)",
+      }
     }}
   >
-    <CardContent>
+    <CardContent sx={{ p: 2.5 }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
         <Box>
-          <Typography variant="overline" sx={{ fontWeight: 600, color: "text.secondary" }}>
+          <Typography
+            variant="overline"
+            sx={{
+              fontWeight: 700,
+              letterSpacing: "0.6px",
+              color: "text.secondary",
+              fontSize: "0.7rem",
+            }}
+          >
             {title}
           </Typography>
-          <Typography variant="h4" sx={{ fontWeight: "bold", color: "text.primary" }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 800,
+              letterSpacing: "-0.02em",
+              mt: 0.5,
+            }}
+          >
             {value}
           </Typography>
         </Box>
-        <Avatar sx={{ bgcolor: color, color: "#fff", width: 56, height: 56 }}>
+        <Avatar
+          sx={{
+            background: gradient || color || "#06b6d4",
+            color: "#fff",
+            width: 50,
+            height: 50,
+            boxShadow: `0 4px 14px ${color}40`,
+          }}
+        >
           <SvgIcon>{icon}</SvgIcon>
         </Avatar>
       </Stack>
@@ -70,24 +106,37 @@ const StatCard = ({ title, value, icon, color }) => (
   </Card>
 );
 
-// Métricas NPS
 const NpsMetricCard = ({ title, value, color }) => (
-  <Card sx={{ height: "100%", textAlign: "center", p: 2, borderRadius: 3, boxShadow: "none", border: "1px solid", borderColor: "divider" }}>
-    <Typography variant="overline" color="text.secondary">{title}</Typography>
-    <Typography variant="h3" fontWeight="bold" sx={{ color, my: 1 }}>{value}%</Typography>
-    <Box sx={{ height: 8, backgroundColor: "grey.200", borderRadius: 1, overflow: "hidden" }}>
-      <Box sx={{ height: "100%", width: `${value}%`, backgroundColor: color }} />
+  <Card
+    sx={{
+      height: "100%",
+      textAlign: "center",
+      p: 2.5,
+      borderRadius: 3,
+      background: (theme) =>
+        theme.palette.mode === "dark"
+          ? "rgba(18, 18, 28, 0.7)"
+          : "#ffffff",
+      border: (theme) =>
+        theme.palette.mode === "dark"
+          ? "1px solid rgba(255, 255, 255, 0.08)"
+          : "1px solid #e2e8f0",
+      boxShadow: "none",
+    }}
+  >
+    <Typography variant="overline" color="text.secondary" fontWeight={600}>{title}</Typography>
+    <Typography variant="h3" fontWeight={800} sx={{ color, my: 1 }}>{value}%</Typography>
+    <Box sx={{ height: 6, backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(255,255,255,0.08)" : "grey.200", borderRadius: 3, overflow: "hidden" }}>
+      <Box sx={{ height: "100%", width: `${value}%`, backgroundColor: color, borderRadius: 3 }} />
     </Box>
   </Card>
 );
 
 const Dashboard = () => {
   const themeV5 = useThemeV5();
-  const themeV4 = useThemeV4(); // whitelabel (igual à tela de login)
+  const themeV4 = useThemeV4();
 
-  const PRIMARY_MAIN = themeV4?.palette?.primary?.main || "#1976d2";
-  const PRIMARY_DARK = themeV4?.palette?.primary?.dark || "#115293";
-  const PRIMARY_CONTRAST = themeV4?.palette?.primary?.contrastText || "#fff";
+  const PRIMARY_MAIN = themeV4?.palette?.primary?.main || "#06b6d4";
 
   const [counters, setCounters] = useState({});
   const [attendants, setAttendants] = useState([]);
@@ -110,25 +159,11 @@ const Dashboard = () => {
         if (isArray(data.attendants)) setAttendants(data.attendants);
       } catch (error) {
         toast.error(i18n.t("dashboard.errors.loadData"));
-        console.error(error);
       }
       setLoading(false);
     };
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const exportToExcel = () => {
-    try {
-      const table = document.getElementById("grid-attendants");
-      const ws = XLSX.utils.table_to_sheet(table);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, i18n.t("dashboard.export.sheetName"));
-      XLSX.writeFile(wb, i18n.t("dashboard.export.fileName"));
-    } catch {
-      toast.error(i18n.t("dashboard.errors.exportExcel"));
-    }
-  };
 
   const getOnlineUsersCount = () => attendants.filter(u => u.online).length;
 
@@ -137,12 +172,48 @@ const Dashboard = () => {
   }
 
   const statCards = [
-    { title: i18n.t("dashboard.cards.inAttendance"), value: counters.supportHappening || 0, icon: <CallIcon />, color: PRIMARY_MAIN },
-    { title: i18n.t("dashboard.cards.waiting"), value: counters.supportPending || 0, icon: <HourglassEmptyIcon />, color: themeV5.palette.info.main },
-    { title: i18n.t("dashboard.cards.finalized"), value: counters.supportFinished || 0, icon: <CheckCircleIcon />, color: themeV5.palette.success.main },
-    { title: i18n.t("dashboard.cards.groups"), value: counters.supportGroups || 0, icon: <Groups />, color: themeV5.palette.secondary.main },
-    { title: i18n.t("dashboard.cards.activeAttendants"), value: `${getOnlineUsersCount()}/${attendants.length}`, icon: <RecordVoiceOverIcon />, color: themeV5.palette.error.main },
-    { title: i18n.t("dashboard.cards.newContacts"), value: counters.leads || 0, icon: <GroupAddIcon />, color: themeV5.palette.warning.main }
+    {
+      title: i18n.t("dashboard.cards.inAttendance"),
+      value: counters.supportHappening || 0,
+      icon: <CallIcon />,
+      color: "#06b6d4",
+      gradient: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
+    },
+    {
+      title: i18n.t("dashboard.cards.waiting"),
+      value: counters.supportPending || 0,
+      icon: <HourglassEmptyIcon />,
+      color: "#f97316",
+      gradient: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+    },
+    {
+      title: i18n.t("dashboard.cards.finalized"),
+      value: counters.supportFinished || 0,
+      icon: <CheckCircleIcon />,
+      color: "#10b981",
+      gradient: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    },
+    {
+      title: i18n.t("dashboard.cards.groups"),
+      value: counters.supportGroups || 0,
+      icon: <Groups />,
+      color: "#8b5cf6",
+      gradient: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+    },
+    {
+      title: i18n.t("dashboard.cards.activeAttendants"),
+      value: `${getOnlineUsersCount()}/${attendants.length}`,
+      icon: <RecordVoiceOverIcon />,
+      color: "#3b82f6",
+      gradient: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+    },
+    {
+      title: i18n.t("dashboard.cards.newContacts"),
+      value: counters.leads || 0,
+      icon: <GroupAddIcon />,
+      color: "#ec4899",
+      gradient: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
+    }
   ];
 
   const npsData = {
@@ -156,9 +227,9 @@ const Dashboard = () => {
   };
 
   const npsColors = {
-    [i18n.t("dashboard.assessments.prosecutors")]: "#2EA85A",
-    [i18n.t("dashboard.assessments.detractors")]: "#F73A2C",
-    [i18n.t("dashboard.assessments.neutral")]: "#F7EC2C"
+    [i18n.t("dashboard.assessments.prosecutors")]: "#10b981",
+    [i18n.t("dashboard.assessments.detractors")]: "#ef4444",
+    [i18n.t("dashboard.assessments.neutral")]: "#eab308"
   };
   const npsChartData = [
     { name: i18n.t("dashboard.assessments.prosecutors"), value: npsData.promoters },
@@ -168,18 +239,30 @@ const Dashboard = () => {
   const sortedNpsColors = npsChartData.map(item => npsColors[item.name]);
 
   return (
-    <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", py: 4 }}>
+    <Box
+      sx={{
+        backgroundColor: "background.default",
+        minHeight: "100vh",
+        py: 4,
+        px: { xs: 1, sm: 2 }
+      }}
+    >
       <Container maxWidth="xl">
-        {/* Título com cor do whitelabel */}
         <Typography
           variant="h4"
-          fontWeight="bold"
-          sx={{ mb: 4, color: PRIMARY_MAIN }}
+          sx={{
+            mb: 3,
+            fontWeight: 800,
+            letterSpacing: "-0.02em",
+            background: "linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
         >
           {i18n.t("dashboard.title") || "Dashboard"}
         </Typography>
 
-        <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid container spacing={2.5} sx={{ mb: 3.5 }}>
           {statCards.map((card, index) => (
             <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
               <StatCard {...card} />
@@ -187,22 +270,39 @@ const Dashboard = () => {
           ))}
         </Grid>
 
-        <Paper elevation={0} sx={{ mb: 3, borderRadius: 3, bgcolor: "transparent" }}>
+        <Paper
+          elevation={0}
+          sx={{
+            mb: 3,
+            borderRadius: 3,
+            bgcolor: (theme) => theme.palette.mode === "dark" ? "rgba(18, 18, 28, 0.6)" : "#ffffff",
+            border: (theme) => theme.palette.mode === "dark" ? "1px solid rgba(255,255,255,0.08)" : "1px solid #e2e8f0",
+            p: 0.5,
+          }}
+        >
           <Tabs
             value={activeTab}
             onChange={(e, nv) => setActiveTab(nv)}
             variant="fullWidth"
             sx={{
-              borderBottom: 1,
-              borderColor: "divider",
               "& .MuiTab-root": {
                 fontWeight: 700,
-                textTransform: "uppercase", // ← deixar como NPS
-                fontSize: "0.95rem",
+                textTransform: "uppercase",
+                fontSize: "0.85rem",
+                letterSpacing: "0.04em",
+                borderRadius: 2,
                 color: "text.secondary",
-                "&.Mui-selected": { color: PRIMARY_MAIN }
+                transition: "all 0.2s ease",
+                "&.Mui-selected": {
+                  color: "#06b6d4",
+                  background: (theme) => theme.palette.mode === "dark" ? "rgba(6, 182, 212, 0.12)" : "rgba(6, 182, 212, 0.08)",
+                }
               },
-              "& .MuiTabs-indicator": { backgroundColor: PRIMARY_MAIN, height: 3, borderRadius: "2px" }
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#06b6d4",
+                height: 3,
+                borderRadius: "2px",
+              }
             }}
           >
             <Tab label={i18n.t("dashboard.tabs.performance")} />
@@ -213,81 +313,84 @@ const Dashboard = () => {
 
         <Box>
           {activeTab === 0 && (
-            <Paper elevation={0} sx={{ p: { xs: 2, sm: 3 }, borderRadius: 3, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}>
+            <Paper
+              elevation={0}
+              sx={{
+                p: { xs: 2, sm: 3 },
+                borderRadius: 3,
+                bgcolor: "background.paper",
+                border: (theme) => theme.palette.mode === "dark" ? "1px solid rgba(255,255,255,0.08)" : "1px solid #e2e8f0",
+              }}
+            >
               <ChartsDate />
             </Paper>
           )}
 
           {activeTab === 1 && (
-            <Paper elevation={0} sx={{ p: { xs: 2, sm: 3 }, borderRadius: 3, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}>
+            <Paper
+              elevation={0}
+              sx={{
+                p: { xs: 2, sm: 3 },
+                borderRadius: 3,
+                bgcolor: "background.paper",
+                border: (theme) => theme.palette.mode === "dark" ? "1px solid rgba(255,255,255,0.08)" : "1px solid #e2e8f0",
+              }}
+            >
               <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                <Avatar sx={{ bgcolor: "primary.light", color: "primary.main", mr: 2 }}>
+                <Avatar sx={{ bgcolor: "rgba(6, 182, 212, 0.15)", color: "#06b6d4", mr: 2, width: 44, height: 44 }}>
                   <Star />
                 </Avatar>
                 <Typography variant="h6" fontWeight="bold">{i18n.t("dashboard.tabs.assessments")}</Typography>
               </Box>
-              <Divider sx={{ my: 2 }} />
+              <Divider sx={{ my: 2, borderColor: (theme) => theme.palette.mode === "dark" ? "rgba(255,255,255,0.08)" : "#e2e8f0" }} />
               <Grid container spacing={3}>
                 <Grid item xs={12} md={4}>
-                  <Card sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", p: 2, borderRadius: 3, border: "1px solid", borderColor: "divider" }}>
-                    <Typography variant="overline" color="text.secondary">{i18n.t("dashboard.assessments.generalScore")}</Typography>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      p: 3,
+                      borderRadius: 3,
+                      bgcolor: (theme) => theme.palette.mode === "dark" ? "rgba(18, 18, 28, 0.6)" : "#ffffff",
+                      border: (theme) => theme.palette.mode === "dark" ? "1px solid rgba(255,255,255,0.08)" : "1px solid #e2e8f0",
+                    }}
+                  >
+                    <Typography variant="overline" color="text.secondary" fontWeight={700}>
+                      {i18n.t("dashboard.assessments.generalScore")}
+                    </Typography>
                     <ChartDonut data={npsChartData} value={npsData.score} colors={sortedNpsColors} />
                   </Card>
                 </Grid>
 
                 <Grid item container xs={12} md={8} spacing={2}>
-                  <NpsMetricCard title={i18n.t("dashboard.assessments.prosecutors")} value={npsData.promoters} color={npsColors[i18n.t("dashboard.assessments.prosecutors")]} />
-                  <NpsMetricCard title={i18n.t("dashboard.assessments.neutral")} value={npsData.passives} color={npsColors[i18n.t("dashboard.assessments.neutral")]} />
-                  <NpsMetricCard title={i18n.t("dashboard.assessments.detractors")} value={npsData.detractors} color={npsColors[i18n.t("dashboard.assessments.detractors")]} />
-                </Grid>
-
-                <Grid item xs={12} mt={2}>
-                  <Paper variant="outlined" sx={{ borderRadius: 3 }}>
-                    <Grid container spacing={2} textAlign="center">
-                      {[
-                        { title: i18n.t("dashboard.assessments.totalCalls"), value: npsData.totalTickets },
-                        { title: i18n.t("dashboard.assessments.ratedCalls"), value: npsData.withRating },
-                        { title: i18n.t("dashboard.assessments.evaluationIndex"), value: `${npsData.percRating.toFixed(1)}%` }
-                      ].map((item, index) => (
-                        <Grid item xs={12} sm={4} key={item.title} sx={{ p: 2, position: "relative" }}>
-                          <Typography variant="body2" color="text.secondary" gutterBottom>{item.title}</Typography>
-                          <Typography variant="h5" fontWeight="bold" sx={{ color: PRIMARY_MAIN }}>{item.value}</Typography>
-                          {index < 2 && <Divider orientation="vertical" flexItem sx={{ position: "absolute", right: 0, top: "15%", height: "70%" }} />}
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Paper>
+                  <Grid item xs={12} sm={4}>
+                    <NpsMetricCard title={i18n.t("dashboard.assessments.prosecutors")} value={npsData.promoters} color={npsColors[i18n.t("dashboard.assessments.prosecutors")]} />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <NpsMetricCard title={i18n.t("dashboard.assessments.neutral")} value={npsData.passives} color={npsColors[i18n.t("dashboard.assessments.neutral")]} />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <NpsMetricCard title={i18n.t("dashboard.assessments.detractors")} value={npsData.detractors} color={npsColors[i18n.t("dashboard.assessments.detractors")]} />
+                  </Grid>
                 </Grid>
               </Grid>
             </Paper>
           )}
 
           {activeTab === 2 && (
-            <Paper elevation={0} sx={{ p: { xs: 2, sm: 3 }, borderRadius: 3, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}>
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-                <Typography variant="h6" fontWeight="bold">{i18n.t("dashboard.tabs.attendants")}</Typography>
-                <IconButton
-                  onClick={exportToExcel}
-                  size="small"
-                  sx={{
-                    backgroundColor: PRIMARY_MAIN,
-                    color: PRIMARY_CONTRAST,
-                    transition: "all .2s ease-in-out",
-                    "&:hover": { backgroundColor: PRIMARY_DARK, transform: "translateY(-1px)", boxShadow: "0 6px 18px rgba(0,0,0,.15)" }
-                  }}
-                >
-                  <SaveAlt />
-                </IconButton>
-              </Box>
-              <Divider sx={{ mb: 3 }} />
-              <div id="grid-attendants">
-                {attendants.length > 0 && <TableAttendantsStatus attendants={attendants} loading={loading} />}
-              </div>
-              <Box sx={{ mt: 4 }}>
-                <Typography variant="h6" fontWeight="bold" gutterBottom>{i18n.t("dashboard.charts.userPerformance")}</Typography>
-                <Divider sx={{ mb: 3 }} />
-                <ChatsUser />
-              </Box>
+            <Paper
+              elevation={0}
+              sx={{
+                p: { xs: 2, sm: 3 },
+                borderRadius: 3,
+                bgcolor: "background.paper",
+                border: (theme) => theme.palette.mode === "dark" ? "1px solid rgba(255,255,255,0.08)" : "1px solid #e2e8f0",
+              }}
+            >
+              <ChatsUser />
             </Paper>
           )}
         </Box>

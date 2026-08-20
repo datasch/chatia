@@ -231,14 +231,14 @@ const ForgotPassword = () => {
 
   // Language options
   const languageOptions = [
-    { code: "pt", flag: "/flags/br.png", name: "Português" },
-    { code: "en", flag: "/flags/us.png", name: "English" },
     { code: "es", flag: "/flags/es.png", name: "Español" },
+    { code: "en", flag: "/flags/us.png", name: "English" },
+    { code: "pt", flag: "/flags/br.png", name: "Português" },
     { code: "tr", flag: "/flags/tr.png", name: "Türkçe" },
     { code: "ar", flag: "/flags/sa.png", name: "العربية" },
   ];
 
-  const currentLanguage = localStorage.getItem("i18nextLng") || "pt";
+  const currentLanguage = localStorage.getItem("i18nextLng") || "es";
   const selectedLanguage = languageOptions.find(lang => lang.code === currentLanguage) || languageOptions[0];
 
   // Logo selection function

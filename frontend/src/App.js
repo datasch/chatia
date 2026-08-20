@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import api from "./services/api";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ptBR } from "@material-ui/core/locale";
+import { ptBR, esES } from "@material-ui/core/locale";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { useMediaQuery } from "@material-ui/core";
 import ColorModeContext from "./layout/themeContext";
@@ -20,11 +20,11 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const [locale, setLocale] = useState();
-  const appColorLocalStorage = localStorage.getItem("primaryColorLight") || localStorage.getItem("primaryColorDark") || "#065183";
-  const appNameLocalStorage = localStorage.getItem("appName") || "";
+  const appColorLocalStorage = localStorage.getItem("primaryColorLight") || localStorage.getItem("primaryColorDark") || "#06b6d4";
+  const appNameLocalStorage = localStorage.getItem("appName") || "Gissap CRM";
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const preferredTheme = window.localStorage.getItem("preferredTheme");
-  const [mode, setMode] = useState(preferredTheme ? preferredTheme : prefersDarkMode ? "dark" : "light");
+  const [mode, setMode] = useState(preferredTheme ? preferredTheme : "dark");
   const [primaryColorLight, setPrimaryColorLight] = useState(appColorLocalStorage);
   const [primaryColorDark, setPrimaryColorDark] = useState(appColorLocalStorage);
   const [appLogoLight, setAppLogoLight] = useState(defaultLogoLight);
@@ -32,7 +32,6 @@ const App = () => {
   const [appLogoFavicon, setAppLogoFavicon] = useState(defaultLogoFavicon);
   const [appName, setAppName] = useState(appNameLocalStorage);
   const { getPublicSetting } = useSettings();
-  // Estado para controlar o prompt de instalação do PWA
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   const colorMode = useMemo(
@@ -67,39 +66,179 @@ const App = () => {
     () =>
       createTheme(
         {
+          typography: {
+            fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            h6: { fontWeight: 600 },
+            subtitle1: { fontWeight: 500 },
+            body1: { fontSize: "0.875rem" },
+            body2: { fontSize: "0.8125rem" },
+            button: { textTransform: "none", fontWeight: 600 },
+          },
+          shape: {
+            borderRadius: 12,
+          },
           scrollbarStyles: {
             "&::-webkit-scrollbar": {
-              width: "8px",
-              height: "8px",
+              width: "6px",
+              height: "6px",
             },
             "&::-webkit-scrollbar-thumb": {
-              boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)",
-              backgroundColor: mode === "light" ? primaryColorLight : primaryColorDark,
+              borderRadius: "999px",
+              backgroundColor: mode === "light" ? "rgba(0,0,0,0.18)" : "rgba(255,255,255,0.18)",
+            },
+            "&::-webkit-scrollbar-thumb:hover": {
+              backgroundColor: "#06b6d4",
             },
           },
           scrollbarStylesSoft: {
             "&::-webkit-scrollbar": {
-              width: "8px",
+              width: "6px",
             },
             "&::-webkit-scrollbar-thumb": {
-              backgroundColor: mode === "light" ? "#F3F3F3" : "#333333",
+              borderRadius: "999px",
+              backgroundColor: mode === "light" ? "#e2e8f0" : "#1f1f2e",
             },
           },
           palette: {
             type: mode,
-            primary: { main: mode === "light" ? primaryColorLight : primaryColorDark },
-            textPrimary: mode === "light" ? primaryColorLight : primaryColorDark,
-            borderPrimary: mode === "light" ? primaryColorLight : primaryColorDark,
-            dark: { main: mode === "light" ? "#333333" : "#F3F3F3" },
-            light: { main: mode === "light" ? "#F3F3F3" : "#333333" },
-            fontColor: mode === "light" ? primaryColorLight : primaryColorDark,
-            tabHeaderBackground: mode === "light" ? "#EEE" : "#1a1a1a",
-            optionsBackground: mode === "light" ? "#fafafa" : "#1a1a1a",
-            fancyBackground: mode === "light" ? "#fafafa" : "#1a1a1a",
-            total: mode === "light" ? "#fff" : "#1a1a1a",
-            messageIcons: mode === "light" ? "grey" : "#F3F3F3",
-            inputBackground: mode === "light" ? "#FFFFFF" : "#1a1a1a",
-            barraSuperior: mode === "light" ? primaryColorLight : "#2c2c2c",
+            primary: {
+              main: mode === "light" ? primaryColorLight : primaryColorDark,
+              light: "#38bdf8",
+              dark: "#0284c7",
+              contrastText: "#ffffff",
+            },
+            secondary: {
+              main: "#8b5cf6",
+              light: "#a78bfa",
+              dark: "#7c3aed",
+            },
+            background: {
+              default: mode === "light" ? "#f8fafc" : "#0a0a0f",
+              paper: mode === "light" ? "#ffffff" : "#12121c",
+            },
+            textPrimary: mode === "light" ? "#0f172a" : "#f8fafc",
+            borderPrimary: mode === "light" ? "#e2e8f0" : "rgba(255, 255, 255, 0.08)",
+            dark: { main: mode === "light" ? "#1e293b" : "#f8fafc" },
+            light: { main: mode === "light" ? "#f1f5f9" : "#1a1a2e" },
+            fontColor: mode === "light" ? "#0f172a" : "#f8fafc",
+            tabHeaderBackground: mode === "light" ? "#f1f5f9" : "#161626",
+            optionsBackground: mode === "light" ? "#f8fafc" : "#12121c",
+            fancyBackground: mode === "light" ? "#f8fafc" : "#0a0a0f",
+            total: mode === "light" ? "#ffffff" : "#12121c",
+            messageIcons: mode === "light" ? "#64748b" : "#94a3b8",
+            inputBackground: mode === "light" ? "#ffffff" : "#161626",
+            barraSuperior: mode === "light" ? "#ffffff" : "#0a0a0f",
+          },
+          overrides: {
+            MuiPaper: {
+              rounded: {
+                borderRadius: 14,
+              },
+              elevation1: {
+                boxShadow: mode === "light"
+                  ? "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)"
+                  : "0 4px 20px rgba(0,0,0,0.4)",
+                border: mode === "light"
+                  ? "1px solid #e2e8f0"
+                  : "1px solid rgba(255, 255, 255, 0.08)",
+              },
+            },
+            MuiCard: {
+              root: {
+                borderRadius: 16,
+                backgroundColor: mode === "light" ? "#ffffff" : "#12121c",
+                border: mode === "light" ? "1px solid #e2e8f0" : "1px solid rgba(255, 255, 255, 0.08)",
+                boxShadow: mode === "light" ? "0 2px 8px rgba(0,0,0,0.04)" : "0 4px 24px rgba(0,0,0,0.4)",
+              },
+            },
+            MuiButton: {
+              root: {
+                borderRadius: 10,
+                textTransform: "none",
+                fontWeight: 600,
+                letterSpacing: "-0.01em",
+              },
+              containedPrimary: {
+                background: "linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%)",
+                boxShadow: "0 4px 14px rgba(6, 182, 212, 0.25)",
+                "&:hover": {
+                  boxShadow: "0 6px 20px rgba(6, 182, 212, 0.35)",
+                  filter: "brightness(1.08)",
+                },
+              },
+            },
+            MuiChip: {
+              root: {
+                borderRadius: 8,
+                fontWeight: 600,
+              },
+            },
+            MuiTab: {
+              root: {
+                borderRadius: 8,
+                textTransform: "none",
+                fontWeight: 600,
+                fontSize: "0.875rem",
+                transition: "all 0.2s ease",
+              },
+            },
+            MuiTabs: {
+              indicator: {
+                backgroundColor: "#06b6d4",
+                height: 3,
+                borderRadius: "3px 3px 0 0",
+              },
+            },
+            MuiSwitch: {
+              colorPrimary: {
+                "&$checked": {
+                  color: "#06b6d4",
+                },
+                "&$checked + $track": {
+                  backgroundColor: "#06b6d4",
+                },
+              },
+            },
+            MuiOutlinedInput: {
+              root: {
+                borderRadius: 12,
+                "&:hover $notchedOutline": {
+                  borderColor: "rgba(6, 182, 212, 0.4)",
+                },
+                "&$focused $notchedOutline": {
+                  borderColor: "#06b6d4",
+                  borderWidth: "1.5px",
+                },
+              },
+            },
+            MuiTableCell: {
+              root: {
+                borderColor: mode === "light" ? "#f1f5f9" : "rgba(255, 255, 255, 0.06)",
+              },
+              head: {
+                fontWeight: 700,
+                fontSize: "0.75rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                color: mode === "light" ? "#64748b" : "#94a3b8",
+              },
+            },
+            MuiDialog: {
+              paper: {
+                borderRadius: 18,
+                backgroundColor: mode === "light" ? "#ffffff" : "#12121c",
+                border: mode === "light" ? "none" : "1px solid rgba(255, 255, 255, 0.1)",
+                boxShadow: "0 24px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(6, 182, 212, 0.1)",
+              },
+            },
+            MuiTooltip: {
+              tooltip: {
+                borderRadius: 8,
+                fontSize: "0.75rem",
+                backgroundColor: mode === "light" ? "#0f172a" : "#1a1a2e",
+                border: "1px solid rgba(6, 182, 212, 0.25)",
+              },
+            },
           },
           mode,
           appLogoLight,
@@ -124,41 +263,26 @@ const App = () => {
     [appLogoLight, appLogoDark, appLogoFavicon, appName, locale, mode, primaryColorDark, primaryColorLight]
   );
 
-  // Detecta quando o navegador está pronto para mostrar o prompt de instalação do PWA
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
-      // Previne o comportamento padrão do navegador
       e.preventDefault();
-      // Armazena o evento para uso posterior
       setDeferredPrompt(e);
-      
-      // Mostra o prompt de instalação imediatamente
       setTimeout(() => {
         showInstallPrompt();
-      }, 2000); // Pequeno delay para garantir que a página já carregou
+      }, 2000);
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
 
-  // Função para mostrar o prompt de instalação
   const showInstallPrompt = () => {
     if (deferredPrompt) {
-      // Verifica se o PWA já está instalado
       if (!window.matchMedia('(display-mode: standalone)').matches) {
-        // Mostra o prompt de instalação
         deferredPrompt.prompt();
-        
-        // Espera pela resposta do usuário
         deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-          } else {
-          }
-          // Limpa o prompt armazenado, só pode ser usado uma vez
           setDeferredPrompt(null);
         });
       }
@@ -167,14 +291,16 @@ const App = () => {
 
   useEffect(() => {
     try {
-      const i18nlocale = localStorage.getItem("i18nextLng") || "pt";
-      const browserLocale = i18nlocale.substring(0, 2) + (i18nlocale.length > 3 ? i18nlocale.substring(3, 5) : "");
+      const i18nlocale = localStorage.getItem("i18nextLng") || "es";
+      const browserLocale = i18nlocale.substring(0, 2);
 
-      if (browserLocale === "ptBR" || browserLocale === "pt") {
+      if (browserLocale === "es") {
+        setLocale(esES);
+      } else if (browserLocale === "pt") {
         setLocale(ptBR);
       }
     } catch (e) {
-      setLocale(ptBR);
+      setLocale(esES);
     }
   }, []);
 
@@ -183,18 +309,16 @@ const App = () => {
   }, [mode]);
 
   useEffect(() => {
-    // WhiteLabel: Carregar TODAS as configurações com cache-first + paralelização
     const loadWhiteLabelSettings = async () => {
       const settingsConfig = [
-        { key: 'appName', setter: setAppName, defaultValue: 'ChatIA', cache: true },
-        { key: 'primaryColorLight', setter: setPrimaryColorLight, defaultValue: '#0000FF', cache: true },
-        { key: 'primaryColorDark', setter: setPrimaryColorDark, defaultValue: '#39ACE7', cache: true },
+        { key: 'appName', setter: setAppName, defaultValue: 'Gissap CRM', cache: true },
+        { key: 'primaryColorLight', setter: setPrimaryColorLight, defaultValue: '#06b6d4', cache: true },
+        { key: 'primaryColorDark', setter: setPrimaryColorDark, defaultValue: '#06b6d4', cache: true },
         { key: 'appLogoLight', setter: setAppLogoLight, defaultValue: defaultLogoLight, cache: true, isFile: true },
         { key: 'appLogoDark', setter: setAppLogoDark, defaultValue: defaultLogoDark, cache: true, isFile: true },
         { key: 'appLogoFavicon', setter: setAppLogoFavicon, defaultValue: defaultLogoFavicon, cache: true, isFile: true }
       ];
 
-      // ETAPA 1: Carregar cache PRIMEIRO (síncrono, instantâneo)
       settingsConfig.forEach(({ key, setter, defaultValue, cache, isFile }) => {
         if (cache) {
           const cachedValue = localStorage.getItem(key);
@@ -205,33 +329,25 @@ const App = () => {
 
             setter(value);
 
-            // Atualiza document.title imediatamente se for appName
             if (key === 'appName') {
               document.title = cachedValue;
             }
-
           }
         }
       });
 
-      // ETAPA 2: Executar TODAS as chamadas API EM PARALELO
-
       const promises = settingsConfig.map(({ key }) =>
-        getPublicSetting(key).catch(error => {
-          return null;
-        })
+        getPublicSetting(key).catch(error => null)
       );
 
       const results = await Promise.allSettled(promises);
 
-      // ✅ ETAPA 3: Processar resultados e atualizar estados + cache
       results.forEach((result, index) => {
         const { key, setter, defaultValue, cache, isFile } = settingsConfig[index];
 
         if (result.status === 'fulfilled' && result.value !== null) {
           let value = result.value || defaultValue;
 
-          // Processar arquivos (adicionar URL base se necessário)
           if (isFile && value && !value.startsWith('http') && !value.startsWith('/')) {
             value = getBackendUrl() + "/public/" + value;
           } else if (isFile && !value) {
@@ -240,37 +356,26 @@ const App = () => {
 
           setter(value);
 
-          // Salvar no cache
           if (cache) {
             localStorage.setItem(key, result.value || defaultValue);
           }
 
-          // Atualizar document.title se for appName
           if (key === 'appName') {
             document.title = result.value || defaultValue;
           }
-
         } else {
-          // Se falhou, usar valor padrão (se não tiver cache)
           const cachedValue = localStorage.getItem(key);
           if (!cachedValue) {
             let value = defaultValue;
-            if (isFile && !value.startsWith('http') && !value.startsWith('/')) {
-              // defaultValue já deve ser um caminho relativo válido
-              value = defaultValue;
-            }
             setter(value);
           }
         }
       });
-
     };
 
     loadWhiteLabelSettings();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ✅ WhiteLabel: useEffect reativo para atualizar document.title quando appName muda
   useEffect(() => {
     if (appName && appName !== 'null' && appName !== 'undefined') {
       document.title = appName;
@@ -288,22 +393,21 @@ const App = () => {
         const response = await api.get("/version");
         const { data } = response;
         window.localStorage.setItem("frontendVersion", data.version);
-      } catch (error) {
-      }
+      } catch (error) {}
     }
     fetchVersionData();
   }, []);
 
   return (
     <>
-      <Favicon url={appLogoFavicon ? getBackendUrl() + "/public/" + appLogoFavicon : defaultLogoFavicon} />
+      <Favicon url={appLogoFavicon ? (appLogoFavicon.startsWith('/') ? appLogoFavicon : getBackendUrl() + "/public/" + appLogoFavicon) : defaultLogoFavicon} />
       <ColorModeContext.Provider value={{ colorMode }}>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
             <ActiveMenuProvider>
-  <div style={{ position: "relative", overflow: "hidden", zIndex: 0, height: "100vh" }}>
-    <Routes />
-  </div>
+              <div style={{ position: "relative", overflow: "hidden", zIndex: 0, height: "100vh" }}>
+                <Routes />
+              </div>
             </ActiveMenuProvider>
           </QueryClientProvider>
         </ThemeProvider>

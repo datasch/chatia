@@ -306,7 +306,7 @@ export default function Options(props) {
           setFacebookVerifyToken(value);
         } else {
           // Gerar token automaticamente se estiver vazio
-          const autoToken = "chatia_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+          const autoToken = "gissap_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
           setFacebookVerifyToken(autoToken);
           update({ column: "facebookVerifyToken", data: autoToken });
         }

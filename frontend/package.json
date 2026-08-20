@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "gissap-frontend",
   "version": "2.2.2v-26",
-  "nomeEmpresa": "Sua empresa",
+  "nomeEmpresa": "Giantucchi",
   "versionSystem": "2.0.0",
   "private": true,
   "dependencies": {
